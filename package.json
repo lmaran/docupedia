@@ -6,6 +6,7 @@
   "scripts": {
     "build-prod": "run-s clean copy-files",
     "copy-files": "cpx \"src/**/*\" dist",
+    "clean": "rimraf dist",
     "test": "node --test tests"
   },
   "keywords": [],
