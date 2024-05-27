@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build-prod": "run-s clean copy-files",
-    "copy-files": "cpx \"src/**/*\" dist",
-    "clean": "rimraf dist",
+    "build-prod": "npm run clean && npm run copy-files",
+    "clean": "node ./scripts/cmd-remove-dir.js dist",
+    "copy-files": "node ./scripts/cmd-copy-dir.js src dist",
     "test": "node --test tests"
   },
   "keywords": [],
@@ -15,10 +15,5 @@
   "description": "",
   "dependencies": {
     "express": "^4.19.2"
-  },
-  "devDependencies": {
-    "cpx": "^1.5.0",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^5.0.7"
   }
 }
