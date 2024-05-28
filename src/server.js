@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
 })
 
 app.get("/check", (req, res) => {
-  res.send("matemaraton-" + (process.env.DEPLOYMENT_SLOT || "noslot") + "-" + process.env.NODE_ENV);
+  res.send("docupedia-" + (process.env.DEPLOYMENT_SLOT || "noslot") + "-" + process.env.NODE_ENV);
 });
 
 app.listen(port, () => {

@@ -32,7 +32,7 @@ jobs:
           cp ../docupedia/package.json .
           echo "Waiting for npm install..."
           npm install --omit=dev
-          rm -f package.json package-lock.json
+          rm -f package-lock.json
           date > public/version.txt # add a timestamp to a file 
           git add -A
 
