@@ -1,4 +1,4 @@
-name: Build for production
+name: CI
 on:
   push:
     branches: ["master"]
@@ -32,8 +32,12 @@ jobs:
           cp ../docupedia/package.json .
           echo "Waiting for npm install..."
           npm install --omit=dev
-          rm -f package-lock.json
+          rm -f package-lock.json  # keep package.json (we need "type": "module")
+
+          [ -d public ] || mkdir -p public # create public folder if not exists
+          [ -f public/version.txt ] || touch public/version.txt # create a file if not exists
           date > public/version.txt # add a timestamp to a file 
+
           git add -A
 
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
