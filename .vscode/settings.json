@@ -1,0 +1,22 @@
+{
+    // 1. Global settins. We can overwrite them at the language level, if necessary
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode", // set up Prettier as default formatter
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit", // e.g, replace 'let' with 'const' on save, if applicable
+        "source.organizeImports": "explicit" // remove any unused imports, sort existing imports by file paths, and sort named imports
+    },
+    "cSpell.words": ["docupedia", "katex", "recaptcha"],
+    "cSpell.diagnosticLevel": "Hint"
+
+    // 2. Local settings (language level)
+    // "[handlebars]": {
+    //     "editor.defaultFormatter": null, // disable Prettier
+    //     "editor.codeActionsOnSave": {
+    //         "source.fixAll": "never" // disable fix for ESLint (we still can see the suggestions în the editor)
+    //     }
+    // },
+    // "[html]": {
+    //     "editor.defaultFormatter": "vscode.html-language-features" // switch HTML formatting to the default vscode formatter
+    // }
+}

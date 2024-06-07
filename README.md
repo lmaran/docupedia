@@ -5,4 +5,4 @@ npm start
 npm test
 
 # start browser:
-http://localhost.ro:3000
+http://localhost.ro:1420

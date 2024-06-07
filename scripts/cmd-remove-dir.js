@@ -2,7 +2,7 @@
 
 /*
 Example: 
-    package.json: "scripts.clean": "node ./scripts/cmd-remove-dir.js dist" (or dist/dir1 to remove only the dir1 subdirectory)
+    package.json: "scripts.clean": "node ./scripts/cmd-remove-dir.js dist"
     bash: npm run clean
 */
 import process from 'node:process';

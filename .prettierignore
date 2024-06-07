@@ -1,0 +1,3 @@
+# Ignore all HTML and Handlebar files. Prettier's CLI ignores node_modules by default.
+*.html
+*.hbs
