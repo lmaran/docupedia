@@ -1,19 +1,30 @@
 {
-  "name": "docupedia",
-  "type": "module",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "build-prod": "npm run clean && npm run copy-files",
-    "clean": "node ./scripts/cmd-remove-dir.js dist",
-    "copy-files": "node ./scripts/cmd-copy-dir.js src dist",
-    "test": "node --test tests"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "express": "^4.19.2"
-  }
+    "name": "docupedia",
+    "type": "module",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "node --env-file=.env src/server.js",
+        "build-prod": "npm run clean && npm run copy-files",
+        "clean": "node ./scripts/cmd-remove-dir.js dist",
+        "copy-files": "node ./scripts/cmd-copy-dir.js src dist",
+        "test": "node --test tests",
+        "lint": "npx eslint src tests",
+        "lint:fix": "npm run lint -- --fix",
+        "prettier": "npx prettier src tests --check",
+        "prettier:fix": "npm run prettier -- --write",
+        "format": "npm run prettier:fix && npm run lint:fix"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "express": "^4.19.2"
+    },
+    "devDependencies": {
+        "eslint": "^9.4.0",
+        "eslint-config-prettier": "^9.1.0",
+        "prettier": "3.3.0"
+    }
 }
