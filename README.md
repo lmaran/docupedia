@@ -1,4 +1,4 @@
-# start server:
+# start server: b2
 npm start
 
 # run tests:
