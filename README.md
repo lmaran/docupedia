@@ -1,8 +1,11 @@
-# start server: b3
+# start server: F2
+
 npm start
 
 # run tests:
+
 npm test
 
 # start browser:
+
 http://localhost.ro:1420
