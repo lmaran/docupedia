@@ -1,4 +1,4 @@
-# start server: F2
+# start server: F2-2
 
 npm start
 
