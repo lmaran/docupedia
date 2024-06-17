@@ -1,6 +1,6 @@
-const config = {
+let config = {
     tabWidth: 4,
-    printWidth: 150
+    printWidth: 150,
 };
-  
+
 export default config;
