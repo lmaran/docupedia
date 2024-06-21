@@ -1,4 +1,4 @@
-# start server: B1
+# start server: B2
 
 npm start
 
