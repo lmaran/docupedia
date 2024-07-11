@@ -1,11 +1,11 @@
 name: Build and test
 on:
-    # c
-    #     branches: ["**", "!*-dist"]
-    # pull_request:
-    #     branches: ["master"]
     push:
-        branches: ["master"]
+        branches: ["**", "!*-dist"]
+    pull_request:
+        branches: ["main"]
+    # push:
+    #     branches: ["master"]
 jobs:
     build:
         runs-on: ubuntu-latest
