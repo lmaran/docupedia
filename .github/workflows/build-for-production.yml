@@ -2,10 +2,10 @@ name: Build and test
 on:
     # push:
     #     branches: ["**", "!*-dist"]
-    pull_request:
+    # pull_request:
+    #     branches: ["main"]
+    push:
         branches: ["main"]
-    # push:
-    #     branches: ["master"]
 jobs:
     build:
         runs-on: ubuntu-latest
