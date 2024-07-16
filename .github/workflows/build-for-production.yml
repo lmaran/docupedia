@@ -5,16 +5,28 @@ on:
     # pull_request:
     #     branches: ["main"]
     push:
-        branches: ["main"]
+        branches:
+            - main
 jobs:
     build:
         runs-on: ubuntu-latest
+        environment:
+            name: production
+            url: https://docupedia.ro
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
               with:
                   node-version: "20.x"
                   cache: "npm"
+              env: # Or as an environment variable
+                  SECRET1: ${{ secrets.SECRET1 }}
+                  VAR1: ${{ vars.VAR1 }}
+
+            - run: |
+                  echo "repository secret : $SECRET1"
+                  echo "repository variable : $VAR1"
+
             - run: npm install
             - run: npm run prettier
             - run: npm run lint
