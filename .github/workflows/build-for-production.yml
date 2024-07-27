@@ -19,13 +19,13 @@ jobs:
               with:
                   node-version: "20.x"
                   cache: "npm"
-              env: # Or as an environment variable
+              env:
                   SECRET1: ${{ secrets.SECRET1 }}
                   VAR1: ${{ vars.VAR1 }}
 
             - run: |
-                  echo "repository secret : $SECRET1"
-                  echo "repository variable : $VAR1"
+                  echo "repository secret : $SECRET2"
+                  echo "repository variable : $VAR2"
 
             - run: npm install
             - run: npm run prettier
