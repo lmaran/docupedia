@@ -23,9 +23,13 @@ jobs:
               env:
                   SECRET1: ${{ secrets.SECRET1 }}
                   VAR1: ${{ vars.VAR1 }}
+                  TEST1: Test 123
               run: |
                   echo "repository secret : $SECRET1"
                   echo "repository variable : $VAR1"
+
+                  echo "repository variable : $TEST1"
+                  
                   echo "repository secret : ${{vars.VAR2}}"
                   echo "repository variable : ${{secrets.SECRET2}}"
 
