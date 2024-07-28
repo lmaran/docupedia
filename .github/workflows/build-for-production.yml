@@ -80,6 +80,6 @@ jobs:
                   git commit -m "."
                   git push origin
 
-    # Uncoment the two lines below for remote debug (just use in a terminal the provided url for ssh)
-    # - name: Setup upterm session
-    #   uses: lhotari/action-upterm@v1
+            # Uncoment the two lines below for remote debug (just use in a terminal the provided url for ssh)
+            - name: Setup upterm session
+              uses: lhotari/action-upterm@v1
