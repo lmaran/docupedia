@@ -33,6 +33,14 @@ jobs:
                   echo "repository secret : ${{vars.VAR2}}"
                   echo "repository variable : ${{secrets.SECRET2}}"
 
+                  echo "SECRET1=$SECRET1" >> .env
+                  echo "VAR1=$VAR1" >> .env
+                  echo "SECRET2=${{ secrets.SECRET2 }}" >> .env
+                  echo "TEST1=$TEST1" >> .env
+
+                  cat .env
+
+
             - run: npm install
             - run: npm run prettier
             - run: npm run lint
