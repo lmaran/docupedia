@@ -47,7 +47,7 @@ jobs:
                   [ -f public/version.txt ] || touch public/version.txt # create a file if not exists
                   date > public/version.txt # add a timestamp to a file
 
-
+                  rm -f .env # remomve the old file
                   echo "PORT  = ${{vars.PORT}}" >> .env
                   echo "VAR1 = \"${{vars.VAR1}}\"" >> .env
                   echo "SECRET1 = \"${{secrets.SECRET1}}\"" >> .env
