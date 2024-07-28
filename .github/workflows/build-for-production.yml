@@ -48,12 +48,11 @@ jobs:
                   date > public/version.txt # add a timestamp to a file
 
 
-                  echo "PORT  = ${{vars.PORT}}" >> .env.prod
-                  echo "VAR1 = \"${{vars.VAR1}}\"" >> .env.prod
-                  echo "SECRET1 = \"${{secrets.SECRET1}}\"" >> .env.prod
+                  echo "PORT  = ${{vars.PORT}}" >> .env
+                  echo "VAR1 = \"${{vars.VAR1}}\"" >> .env
+                  echo "SECRET1 = \"${{secrets.SECRET1}}\"" >> .env
 
-                  echo Result:
-                  cat .env.prod
+                  # cat .env # view file content
 
                   git add -A
 
