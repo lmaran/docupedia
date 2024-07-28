@@ -71,8 +71,11 @@ jobs:
 
 
                   echo "PORT=${{vars.PORT}}" >> .env
-                  echo "VAR22=${{vars.VAR1}}" >> .env
+                  echo "VAR1=${{vars.VAR1}}" >> .env
                   echo "SECRET1=${{secrets.SECRET1}}" >> .env
+
+                  echo Result:
+                  cat .env
 
                   git add -A
 
