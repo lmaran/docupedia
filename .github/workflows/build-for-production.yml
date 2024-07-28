@@ -13,11 +13,7 @@ jobs:
         environment:
             name: production
             url: https://docupedia.ro
-        steps:
-            # Uncoment the two lines below for remote debug (just use in a terminal the provided url for ssh)
-            - name: Setup upterm session
-              uses: lhotari/action-upterm@v1
-              
+        steps:              
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
               with:
@@ -83,4 +79,8 @@ jobs:
                   git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
                   git commit -m "."
                   git push origin
+
+            # Uncoment the two lines below for remote debug (just use in a terminal the provided url for ssh)
+            - name: Setup upterm session
+              uses: lhotari/action-upterm@v1
 
