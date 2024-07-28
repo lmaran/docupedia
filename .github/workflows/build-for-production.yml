@@ -29,7 +29,7 @@ jobs:
                   echo "repository variable : $VAR1"
 
                   echo "repository variable : $TEST1"
-                  
+
                   echo "repository secret : ${{vars.VAR2}}"
                   echo "repository variable : ${{secrets.SECRET2}}"
 
@@ -42,39 +42,43 @@ jobs:
                   echo Result:
                   cat .env
 
-
             - run: npm install
             - run: npm run prettier
             - run: npm run lint
             # - run: npm run build-prod --if-present
             - run: npm test
-            # - run: |
-            #     git clone -b "${GITHUB_REF##*/}"-dist --single-branch https://github.com/${GITHUB_REPOSITORY}.git ../tmpFolder
-            #     git config --global user.name "${GITHUB_REPOSITORY_OWNER}" # we need to set an author for commit
-            #     git config --global user.email "lucian.maran@outlook.com"
+            - run: |
+                  git clone -b "${GITHUB_REF##*/}"-dist --single-branch https://github.com/${GITHUB_REPOSITORY}.git ../tmpFolder
+                  git config --global user.name "${GITHUB_REPOSITORY_OWNER}" # we need to set an author for commit
+                  git config --global user.email "lucian.maran@outlook.com"
 
-            #     # Existing structure:
-            #     #  ~/work/docupedia/docupedia (contains "master" branch)
-            #     #  ~/work/docupedia/tmpFolder (contains "dist" branch)
+                  # Existing structure:
+                  #  ~/work/docupedia/docupedia (contains "master" branch)
+                  #  ~/work/docupedia/tmpFolder (contains "dist" branch)
 
-            #     # Run all commands below from tmpFolder
-            #     cd ../tmpFolder
-            #     rm -rf *
-            #     cp -rf  ../docupedia/dist/* .
-            #     cp ../docupedia/package.json .
-            #     echo "Waiting for npm install..."
-            #     npm install --omit=dev
-            #     rm -f package-lock.json  # keep package.json (we need "type": "module")
+                  # Run all commands below from tmpFolder
+                  cd ../tmpFolder
+                  rm -rf *
+                  cp -rf  ../docupedia/dist/* .
+                  cp ../docupedia/package.json .
+                  echo "Waiting for npm install..."
+                  npm install --omit=dev
+                  rm -f package-lock.json  # keep package.json (we need "type": "module")
 
-            #     [ -d public ] || mkdir -p public # create public folder if not exists
-            #     [ -f public/version.txt ] || touch public/version.txt # create a file if not exists
-            #     date > public/version.txt # add a timestamp to a file
+                  [ -d public ] || mkdir -p public # create public folder if not exists
+                  [ -f public/version.txt ] || touch public/version.txt # create a file if not exists
+                  date > public/version.txt # add a timestamp to a file
 
-            #     git add -A
 
-            #     git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-            #     git commit -m "."
-            #     git push origin
+                  echo "PORT=${{vars.PORT}}" >> .env
+                  echo "VAR22=${{vars.VAR1}}" >> .env
+                  echo "SECRET1=${{secrets.SECRET1}}" >> .env
+
+                  git add -A
+
+                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+                  git commit -m "."
+                  git push origin
 
     # Uncoment the two lines below for remote debug (just use in a terminal the provided url for ssh)
     # - name: Setup upterm session
