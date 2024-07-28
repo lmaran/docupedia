@@ -49,7 +49,7 @@ jobs:
             - run: npm install
             - run: npm run prettier
             - run: npm run lint
-            # - run: npm run build-prod --if-present
+            - run: npm run build-prod --if-present
             - run: npm test
             - run: |
                   git clone -b "${GITHUB_REF##*/}"-dist --single-branch https://github.com/${GITHUB_REPOSITORY}.git ../tmpFolder
