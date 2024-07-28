@@ -35,9 +35,11 @@ jobs:
 
                   echo "SECRET1=$SECRET1" >> .env
                   echo "VAR1=$VAR1" >> .env
-                  echo "SECRET2=${{ secrets.SECRET2 }}" >> .env
+                  echo "SECRET2=$VAR2" >> .env
+                  echo "VAR2=${{ vars.VAR }}" >> .env
                   echo "TEST1=$TEST1" >> .env
 
+                  echo Result:
                   cat .env
 
 
