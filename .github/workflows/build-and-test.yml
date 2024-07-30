@@ -68,7 +68,7 @@ jobs:
                   name: build-artifact
                   path: |
                       dist
-                      node_omdules
+                      node_modules
                       public
                       package.json
                       .env
