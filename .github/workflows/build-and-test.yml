@@ -34,14 +34,44 @@ jobs:
             - name: Build
               run: npm run build-prod --if-present
 
+            - name: Test
+              run: npm test
+
+            - name: Deploy
+              run: |
+                  # Existing structure:
+                  #  ~/work/docupedia/docupedia (contains "master" branch)
+                  #  ~/work/docupedia/tmpFolder (contains "dist" branch)
+
+                  # Run all commands below from tmpFolder
+                  rm -rf node_modules
+                  # cp -rf  ../docupedia/dist/* .
+                  # cp ../docupedia/package.json .
+                  echo "Waiting for npm install..."
+                  npm install --omit=dev
+                  rm -f package-lock.json  # keep package.json (we need "type": "module")
+
+                  [ -d public ] || mkdir -p public # create public folder if not exists
+                  [ -f public/version.txt ] || touch public/version.txt # create a file if not exists
+                  date > public/version.txt # add a timestamp to a file
+
+                  # rm -f .env # remove the old file
+                  echo "PORT  = ${{vars.PORT}}" >> .env
+                  echo "VAR1 = \"${{vars.VAR1}}\"" >> .env
+                  echo "SECRET1 = \"${{secrets.SECRET1}}\"" >> .env
+
+                  # cat .env # view file content
+
             - name: Upload build artifacts
               uses: actions/upload-artifact@v4
               with:
                   name: build-artifact
-                  path: dist
-
-            - name: Test
-              run: npm test
+                  path: |
+                      dist
+                      node_omdules
+                      public
+                      package.json
+                      .env
 
             - name: Deploy
               run: |
