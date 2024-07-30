@@ -62,8 +62,8 @@ jobs:
 
                   # cat .env # view file content
 
-                  cp -rf  public/* dist
-                  cp -rf node_modules/* dist
+                  cp -rf  public dist
+                  cp -rf node_modules dist
                   cp package.json dist
                   cp .env dist
 
