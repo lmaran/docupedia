@@ -70,8 +70,8 @@ jobs:
                       dist/**/*
                       # node_modules
                       # public
-                      package.json
-                      .env
+                      # package.json
+                      # .env
 
             - name: Deploy
               run: |
