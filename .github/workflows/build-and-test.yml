@@ -67,7 +67,7 @@ jobs:
               with:
                   name: build-artifact
                   path: |
-                      dist
+                      dist/
                       node_modules
                       public
                       package.json
