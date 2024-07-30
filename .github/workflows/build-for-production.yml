@@ -1,4 +1,4 @@
-name: Build and test
+name: Build
 on:
     # push:
     #     branches: ["**", "!*-dist"]
@@ -13,7 +13,7 @@ jobs:
         environment:
             name: production
             url: https://docupedia.ro
-        steps:              
+        steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
               with:
@@ -63,4 +63,3 @@ jobs:
             # Uncoment the two lines below for remote debug (just use in a terminal the provided url for ssh)
             #- name: Setup upterm session
             #  uses: lhotari/action-upterm@v1
-
