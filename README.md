@@ -4,10 +4,10 @@
 
 npm start
 
-# run tests:
+# run tests
 
 npm test
 
-# start browser:
+# start browser
 
 http://localhost.ro:1420
