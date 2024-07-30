@@ -11,5 +11,5 @@ test("will pass", () => {
 
 // test('will fail', (t) => {
 //     // This test fails because it throws an exception.
-//     assert.equal(1, 2);
+//     assert.equal(1, 1);
 // });
