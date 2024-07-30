@@ -1,4 +1,4 @@
-![workflow badge](https://github.com/lmaran/docupedia/actions/workflows/build-for-production.yml/badge.svg)
+![workflow badge](https://github.com/lmaran/docupedia/actions/workflows/build-and-test.yml/badge.svg)
 
 # start server:7
 
