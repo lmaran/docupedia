@@ -68,8 +68,8 @@ jobs:
                   name: build-artifact
                   path: |
                       dist/**/*
-                      node_modules
-                      public
+                      # node_modules
+                      # public
                       package.json
                       .env
 
