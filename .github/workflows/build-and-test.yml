@@ -71,7 +71,8 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: build-artifact
-                  path: dist
+                  path:
+                      dist
                       # dist/**/*
                       # node_modules
                       # public
@@ -102,7 +103,6 @@ jobs:
                   date > public/version.txt # add a timestamp to a file
 
                   rm -f .env # remomve the old file
-                  echo "PORT  = ${{vars.PORT}}" >> .env
                   echo "VAR1 = \"${{vars.VAR1}}\"" >> .env
                   echo "SECRET1 = \"${{secrets.SECRET1}}\"" >> .env
 
