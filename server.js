@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
 
 // Health check for HAProxy (ex: docupedia-blue-production)
 app.get("/check", (req, res) => {
-    res.send(`docupedia-${process.env.DEPLOYMENT_SLOT || "noslot"}-${process.env.NODE_ENV || "noenv"}`);
+    res.send(`docupedia-${config.deployment_slot}-${config.node_env}`);
 });
 
 app.listen(config.port, () => {
