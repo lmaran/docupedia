@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "start": "node --env-file=.env src/server.js",
+        "start": "node --watch --env-file=.env src/server.js",
         "build-prod": "npm run clean && npm run copy-files",
         "clean": "node ./scripts/cmd-remove-dir.js dist",
         "copy-files": "node ./scripts/cmd-copy-dir.js src dist",
@@ -23,6 +23,7 @@
         "express": "^4.19.2"
     },
     "devDependencies": {
+        "browser-sync": "^3.0.2",
         "eslint": "^9.4.0",
         "eslint-config-prettier": "^9.1.0",
         "prettier": "3.3.0"
