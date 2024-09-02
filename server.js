@@ -1,6 +1,7 @@
 import browserSync from "browser-sync";
 import express from "express";
 import config from "./config/config.js";
+import routes from "./routes.js";
 
 const app = express();
 
@@ -12,6 +13,8 @@ app.get("/", (req, res) => {
 app.get("/check", (req, res) => {
     res.send(`docupedia-${config.deployment_slot}-${config.env}`);
 });
+
+app.use("/", routes);
 
 app.listen(config.port, listening);
 

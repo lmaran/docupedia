@@ -7,6 +7,8 @@ const config = {
 
     var1: process.env.VAR1 || "var1_default",
     secret1: process.env.SECRET1 || "secret1_default",
+    mongo_uri: "mongodb://localhost",
+    mongo_dbName: "docupedia-dev",
 };
 
 export default config;
