@@ -20,7 +20,8 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
-        "express": "^4.19.2"
+        "express": "^4.19.2",
+        "mongodb": "^6.8.0"
     },
     "devDependencies": {
         "browser-sync": "^3.0.2",
