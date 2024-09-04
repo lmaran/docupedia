@@ -15,4 +15,8 @@ router.get("/check", (req, res) => {
 
 router.get("/test", testController.getAll);
 
+router.get("/view", (req, res) => {
+    res.render("home");
+});
+
 export default router;
