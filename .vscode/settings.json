@@ -3,8 +3,7 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode", // set up Prettier as default formatter
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit", // e.g, replace 'let' with 'const' on save, if applicable
-        "source.organizeImports": "explicit" // remove any unused imports, sort existing imports by file paths, and sort named imports
+        "source.fixAll.eslint": "explicit" // e.g, replace 'let' with 'const' on save, if applicable
     },
     "cSpell.words": ["docupedia", "katex", "recaptcha"],
     "cSpell.diagnosticLevel": "Hint"

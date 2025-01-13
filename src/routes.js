@@ -1,6 +1,6 @@
 import express from "express";
 import config from "./config/config.js";
-import * as testController from "./controllers/test.controller.js";
+import * as userController from "./controllers/user.controller.js";
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.get("/check", (req, res) => {
     res.send(`docupedia-${config.deployment_slot}-${config.env}`);
 });
 
-router.get("/test", testController.getAll);
+router.get("/utilizatori", userController.getAll);
 
 router.get("/view", (req, res) => {
     res.render("home");

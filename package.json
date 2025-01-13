@@ -8,7 +8,10 @@
         "build-prod": "npm run clean && npm run copy-files",
         "clean": "node ./scripts/cmd-remove-dir.js dist",
         "copy-files": "node ./scripts/cmd-copy-dir.js src dist",
-        "test": "node --test tests",
+        "test": "node --test --experimental-test-module-mocks",
+        "test:watch": "node --test --experimental-test-module-mocks --watch",
+        "test:coverage": "node --test --experimental-test-module-mocks --experimental-test-coverage",
+        "test:report": "node --test --experimental-test-module-mocks --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=lcov.info",
         "lint": "eslint",
         "lint:fix": "eslint --fix",
         "prettier": "prettier --check \"**/*.{js,css,json,md}\"",
@@ -25,7 +28,7 @@
         "mongodb": "^6.8.0"
     },
     "devDependencies": {
-        "browser-sync": "^3.0.2",
+        "browser-sync": "^3.0.3",
         "eslint": "^9.4.0",
         "eslint-config-prettier": "^9.1.0",
         "prettier": "3.3.0"
