@@ -8,26 +8,31 @@ if (!config.mongo_dbName) {
     throw new Error("Nu este definit numele bazei de date.");
 }
 
-let client;
 let clientPromise;
-
-if (!client) {
-    client = new MongoClient(config.mongo_uri);
-    clientPromise = client.connect();
-}
-
 export function getClientPromise() {
+    if (!clientPromise) {
+        const client = new MongoClient(config.mongo_uri);
+        clientPromise = client.connect();
+    }
     return clientPromise;
 }
 
-let db;
+let client;
 export async function getDb(dbName) {
-    if (!db) {
-        const client = await clientPromise;
-        db = client.db(dbName || config.mongo_dbName);
-        return db;
+    if (!client) {
+        client = await getClientPromise();
     }
-    return db;
+    return client.db(dbName || config.mongo_dbName);
 }
 
 export { ObjectId };
+
+// Graceful shutdown to avoid potential memory leaks or other issues.
+process.on("SIGINT", gracefulShutdown).on("SIGTERM", gracefulShutdown);
+
+async function gracefulShutdown() {
+    if (client) {
+        await client.close();
+    }
+    process.exit(0);
+}
