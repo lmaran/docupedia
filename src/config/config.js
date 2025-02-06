@@ -9,6 +9,7 @@ const config = {
     secret1: process.env.SECRET1 || "secret1_default",
     mongo_uri: "mongodb://localhost",
     mongo_dbName: "docupedia-dev",
+    mailgun_key: process.env.MAILGUN_KEY,
 };
 
 export default config;

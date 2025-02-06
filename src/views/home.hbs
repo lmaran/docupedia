@@ -1,2 +1,126 @@
-<div>test</div>
-{{#foo}} {{/foo}}
+{{!-- <div>test</div>
+{{#foo}} {{/foo}} --}}
+
+<style>
+    ._card-body {
+        cursor: pointer;
+    }
+</style>
+
+{{!-- <div class="alert alert-info" role="alert">
+    <i class="bi bi-info-circle me-2"></i>
+    Pentru <span class="fw-bold">înscrieri ediția 6</span> (2022-2023), selectați clasa dorită și apoi butonul "Cerere de înscriere".
+</div> --}}
+
+<div class="text-center pt-5 pb-5">
+    <h1>Docupedia</h1>
+    {{!-- <h3 class="text-muted">explicată la nivel elementar</h3> --}}
+    {{!-- <p class="fs-4 text-muted">explicată la nivel elementar</p> --}}
+    {{!-- <p class="fs-5 fw-light">Un proiect implementat de voluntari, în parteneriat cu Școala 21 "Vicențiu Babeș",
+        Timișoara.</p>
+    <p class="fs-5 fw-bold">Ediția 6 (2022-2023)</p> --}}
+    
+    {{!-- <a href="/cursuri" class="btn btn-primary">
+        Vezi toate cursurile
+    </a> --}}
+
+    {{!-- <a href="/fise" class="btn btn-secondary">
+        Fișele mele
+    </a> --}}
+
+</div>
+
+<div class="row row-cols-1 row-cols-md-{{#if @root.user.isAdmin}}3{{else}}2{{/if}} g-4">
+    {{!-- <div class="col">
+        <div class="card h-100">
+            <i class="bi bi-people-fill text-center" style="font-size: 2.5rem; color: gray;"></i>
+            <h3 class="card-title text-center">Clase</h3>
+
+            <div class="card-body">
+
+                <p class="card-text">Grupe de 8-12 elevi care se pregătesc la matematică sub îndrumarea unui instructor.
+                    Cursurile se țin la Școala 21 "Vicențiu Babeș, Timișoara". Totul gratuit.</p>
+            </div>
+            <div class="card-footer bg-white border-top-0 mx-auto">
+                <a href="/clase" class="btn btn-primary _w-100">
+                    Vezi toate clasele
+                </a>
+            </div>
+        </div>
+    </div> --}}
+
+    {{!-- {{#if @root.user.isAdmin}}
+    <div class="col">
+        <div class="card h-100">
+            <i class="bi bi-book text-center" style="font-size: 2.5rem; color: gray;"></i>
+            <h3 class="card-title text-center">Cursuri</h3>
+            <div class="card-body">
+                <p class="card-text">Suporturi de curs (lecții, exerciții rezolvate și teme propuse pentru acasă), toate
+                    grupate pe ani de studiu,
+                    nivel de dificultate și unități de învățare.</p>
+                <p class="card-text"><small class="text-muted font-weight-light2">Utile și celor care se pregătesc fără
+                        instructor.</small> </p>
+            </div>
+            <div class="card-footer bg-white border-top-0 mx-auto">
+                <a href="/cursuri" class="btn btn-primary _w-100">{{!<i class="bi bi-book"></i>}}
+                    Vezi toate cursurile
+                </a>
+            </div>
+        </div>
+    </div>
+    {{/if}} --}}
+
+    {{!-- <div class="col">
+        <div class="card h-100">
+            <i class="bi bi-facebook text-center" style="font-size: 2.5rem; color: gray;"></i>
+            <h3 class="card-title text-center">Comunitate</h3>
+            <div class="card-body">
+                <p class="card-text">Dacă ai nevoie de ajutor, trimite o poză cu exercițiul pe care nu știi să-l faci și
+                    precizează clasa. Atât!.</p>
+                <p class="card-text"><small class="text-muted">Inclusiv pentru părinți.</small></p>
+            </div>
+            <div class="card-footer bg-white border-top-0 mx-auto">
+                <a href="https://www.facebook.com/groups/417125302327211"
+                    class="btn btn-primary _w-100">
+                    Grup Facebook
+                </a>
+            </div>
+        </div>
+    </div> --}}
+</div>
+
+{{!-- <h5 class="mt-5">Ediții anterioare:</h5>
+<ul>
+    <li><a href="/editia-5">Ediția 5</a> (2021 - 2022)</li>
+    <li><a href="/editia-4">Ediția 4</a> (2020 - 2021)</li>
+    <li><a href="/editia-3">Ediția 3</a> (2019 - 2020)</li>
+    <li><a href="/editia-2">Ediția 2</a> (2018 - 2019)</li>
+    <li><a href="/editia-1">Ediția 1</a> (2017 - 2018)</li>
+</ul> --}}
+
+{{!-- <h5>Contact:</h5>
+<ul>
+    <li>ing. Lucian Măran</li>
+    <li>lucian.maran@gmail.com</li>
+    <li><a href="https://www.facebook.com/matemaraton">facebook/matemaraton</a>
+        <small><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></small>
+    </li>
+</ul> --}}
+
+{{!
+<hr> }}
+
+{{!-- {{#if @root.user.isAdmin}}
+<h5 class="mt-5">Admin:</h5>
+<ul>
+    <li><a href="/exercitii">Exerciții</a></li>
+    <li><a href="/lectii">Lecții</a></li>
+    <li><a href="/utilizatori">Utilizatori</a></li>
+    {{! <li><a href='/teste'>Teste</a></li> }}
+</ul>
+{{/if}} --}}
+
+{{!-- <h5>Diverse:</h5>
+<ul>
+    <li><a href="/materiale">Materiale</a><span> (resurse educaționale)</span></li>
+</ul> --}}

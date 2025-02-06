@@ -15,8 +15,7 @@ export const insertOne = async (item) => {
 export const getAll = async () => {
     try {
         const db = await getDb();
-        const items = await db.collection(collectionName).find().project({ password: 0 }).toArray();
-        return items; // if there are no items, return an empty array
+        return await db.collection(collectionName).find().project({ password: 0 }).toArray(); // if there are no items, return an empty array
     } catch (error) {
         throw new Error(`Error retrieving users: ${error.message}`);
     }
@@ -25,8 +24,7 @@ export const getAll = async () => {
 export const getOneById = async (id) => {
     try {
         const db = await getDb();
-        const result = await db.collection(collectionName).findOne({ _id: ObjectId.createFromHexString(id) });
-        return result; // if not found, return null
+        return await db.collection(collectionName).findOne({ _id: ObjectId.createFromHexString(id) }); // if not found, return null
     } catch (error) {
         throw new Error(`Error retrieving user: ${error.message}`);
     }
@@ -50,4 +48,29 @@ export const deleteOneById = async (id) => {
     } catch (error) {
         throw new Error(`Error deleting user: ${error.message}`);
     }
+};
+
+export const getOneByEmail = async (email) => {
+    const db = await getDb();
+    return db.collection(collectionName).findOne({ email: email.toLowerCase() });
+};
+
+export const getOneBySignupCode = async (signupCode) => {
+    const db = await getDb();
+    return db.collection(collectionName).findOne({ signupCode });
+};
+
+export const getOneByResetPasswordCode = async (resetPasswordCode) => {
+    const db = await getDb();
+    return db.collection(collectionName).findOne({ resetPasswordCode });
+};
+
+export const getOneByIdWithoutPsw = async (id) => {
+    const db = await getDb();
+    return db.collection(collectionName).findOne({ _id: new ObjectId(id) }, { projection: { password: 0 } });
+};
+
+export const resetPassword = async (userIdAsString, modifiedFields, removedFields) => {
+    const db = await getDb();
+    return db.collection(collectionName).updateOne({ _id: new ObjectId(userIdAsString) }, { $set: modifiedFields, $unset: removedFields });
 };

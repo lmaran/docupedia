@@ -1,0 +1,88 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb pe-2">
+        <li class="breadcrumb-item"><a href="/">Acasă</a></li>
+        <li class="breadcrumb-item"><a href="/utilizatori">Utilizatori</a></li>
+        <li class="breadcrumb-item active">{{user2.firstName}} {{user2.lastName}}</li>
+    </ol>
+</nav>
+
+<h1>Utilizator</h1>
+
+{{#if canDeleteUser}}
+<form method="post" onsubmit="deleteBtn.disabled = true; return true;" style="display:inline">
+    {{!-- <input type="hidden" name="userId" value="{{user._id}}" /> --}}
+    <button type="submit" formaction="/utilizatori/{{user2._id}}/sterge" title="Șterge" name="deleteBtn"
+        class="btn btn-light btn-outline-primary"
+        onclick="return confirm('Ești sigur că vrei să ștergi acest utilizator?');"><i class="bi bi-trash-fill"></i>
+        Șterge</button>
+</form>
+{{/if}}
+
+<table class="table thead-light table-bordered table-hover mt-4">
+    <tbody>
+        <tr>
+            <td>
+                Nume
+            </td>
+            <td>
+                <a href="/utilizatori/{{_id}}">{{user2.firstName}} {{user2.lastName}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Email
+            </td>
+            <td>
+                {{user2.email}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CreatLa
+            </td>
+            <td>
+                {{user2.createdOn}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Stare
+            </td>
+            <td>
+                {{user2.status}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                EsteAdmin
+            </td>
+            <td>
+                {{user2.isAdmin}}
+            </td>
+        </tr>
+        {{#if user2.person.isParent}}
+        <tr>
+            <td>
+                Elevi
+            </td>
+            <td>
+                {{#each user2.person.students}}
+                <a class="d-block" href="/elevi/{{_id}}">{{firstName}} {{lastName}}</a>
+                {{/each}}
+            </td>
+        </tr>
+        {{/if}}
+        {{#if user2.person.isStudent}}
+        <tr>
+            <td>
+                Părinți
+            </td>
+            <td>
+                {{#each user2.person.parents}}
+                <a class="d-block" href="/parinti/{{_id}}">{{firstName}} {{lastName}}</a>
+                {{/each}}
+            </td>
+        </tr>
+        {{/if}}
+    </tbody>
+</table>
