@@ -13,6 +13,7 @@
     <h1>Crează cont nou</h1>
 
     <form method="post" id="signupForm" action="/signup" novalidate onsubmit="saveBtn.disabled = true; return true;">
+
         <div class="row mb-3">
             <label for="lastName" class="col-md-3 col-form-label required">Nume</label>
             <div class="col-md-7">
@@ -88,7 +89,7 @@
 
 {{#section 'script-after'}}
 {{!-- https://developers.google.com/recaptcha/docs/v3#programmatically_invoke_the_challenge --}}
-<script src="https://www.google.com/recaptcha/api.js?render={{data.recaptchaSiteKey}}"></script>
+{{!-- <script src="https://www.google.com/recaptcha/api.js?render={{data.recaptchaSiteKey}}"></script>
 <script>
 
     // intercepts the form submit event
@@ -107,5 +108,5 @@
         });
     }
 
-</script>
+</script> --}}
 {{/section}}

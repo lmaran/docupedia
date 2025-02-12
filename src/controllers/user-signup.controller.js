@@ -2,17 +2,17 @@ import validator from "validator";
 import { v4 as uuidv4 } from "uuid";
 import * as userService from "../services/user.service.js";
 import * as authService from "../services/auth.service.js";
-import * as emailService from "../services/email.service.js";
+// import * as emailService from "../services/email.service.js";
 
 // const config = require("../config");
 import config from "../config/config.js";
 //const arrayHelper = require("../helpers/array.helper");
-import * as arrayHelper from "../helpers/array.helper.js";
+// import * as arrayHelper from "../helpers/array.helper.js";
 //const cookieHelper = require("../helpers/cookie.helper");
 import * as cookieHelper from "../helpers/cookie.helper.js";
 
 // const recaptchaService = require("../services/recaptcha.service");
-import * as recaptchaService from "../services/recaptcha.service.js";
+// import * as recaptchaService from "../services/recaptcha.service.js";
 
 export const postInviteToSignup = async (req, res) => {
     try {
@@ -49,19 +49,19 @@ export const postInviteToSignup = async (req, res) => {
             await userService.insertOne(newUser);
         }
 
-        // Send this code on email
-        const rootUrl = config.externalUrl; // e.g. http://localhost:1417
-        const link = `${rootUrl}/signup?invitationCode=${uniqueId}`;
+        // // Send this code on email
+        // const rootUrl = config.externalUrl; // e.g. http://localhost:1417
+        // const link = `${rootUrl}/signup?invitationCode=${uniqueId}`;
 
-        const emailData = {
-            to: email,
-            subject: "Invitație activare cont",
-            html: `<html>Pentru activarea contului te rugăm să accesezi 
-                <a href="${link}">link-ul de activare</a>!
-                </html>`,
-        };
+        // const emailData = {
+        //     to: email,
+        //     subject: "Invitație activare cont",
+        //     html: `<html>Pentru activarea contului te rugăm să accesezi
+        //         <a href="${link}">link-ul de activare</a>!
+        //         </html>`,
+        // };
 
-        await emailService.sendEmail(emailData);
+        // await emailService.sendEmail(emailData);
 
         res.redirect("/signup/invitation-sent");
     } catch (err) {
@@ -70,6 +70,7 @@ export const postInviteToSignup = async (req, res) => {
 };
 
 export const getSignup = async (req, res) => {
+    console.log(123);
     const invitationCode = req.query.invitationCode;
     let isInvitationCodeValid = false;
     const uiData = {};
@@ -144,25 +145,25 @@ export const postSignup = async (req, res) => {
     try {
         const { firstName, lastName, email, password, confirmPassword, invitationCode } = req.body;
 
-        // recaptcha verification
-        const captchaResponse = await recaptchaService.checkResponse(req.body["g-recaptcha-response"]);
-        // console.log(captchaResponse);
-        if (!captchaResponse.success || captchaResponse.score <= 0.5) {
-            // over 50% chance to be be a bot
-            const validationErrors = [
-                {
-                    field: "page",
-                    msg: "Nu ai trecut de validarea captcha. Mai încearcă odată!",
-                },
-            ];
-            return flashAndReloadSignupPage(req, res, validationErrors);
-        }
+        // // recaptcha verification
+        // const captchaResponse = await recaptchaService.checkResponse(req.body["g-recaptcha-response"]);
+        // // console.log(captchaResponse);
+        // if (!captchaResponse.success || captchaResponse.score <= 0.5) {
+        //     // over 50% chance to be be a bot
+        //     const validationErrors = [
+        //         {
+        //             field: "page",
+        //             msg: "Nu ai trecut de validarea captcha. Mai încearcă odată!",
+        //         },
+        //     ];
+        //     return flashAndReloadSignupPage(req, res, validationErrors);
+        // }
 
-        // handle static validation errors
-        const validationErrors = getSignupStaticValidationErrors(firstName, lastName, email, password, confirmPassword);
-        if (validationErrors.length) {
-            return flashAndReloadSignupPage(req, res, validationErrors);
-        }
+        // // handle static validation errors
+        // const validationErrors = getSignupStaticValidationErrors(firstName, lastName, email, password, confirmPassword);
+        // if (validationErrors.length) {
+        //     return flashAndReloadSignupPage(req, res, validationErrors);
+        // }
 
         if (invitationCode) {
             const { token, refreshToken } = await authService.signupByInvitationCode(
@@ -179,34 +180,34 @@ export const postSignup = async (req, res) => {
         } else {
             const activationCode = await authService.signupByUserRegistration(firstName, lastName, email, password);
             // Send this code on email
-            const rootUrl = config.externalUrl; // e.g. http://localhost:1417
-            const link = `${rootUrl}/signup/confirm/${activationCode}`;
+            // const rootUrl = config.externalUrl; // e.g. http://localhost:1417
+            // const link = `${rootUrl}/signup/confirm/${activationCode}`;
 
-            const data = {
-                to: email,
-                subject: "Activare cont",
-                html: `<html>Pentru activarea contului te rugăm să accesezi 
-                <a href="${link}">link-ul de activare</a>!
-                </html>`,
-            };
+            // const data = {
+            //     to: email,
+            //     subject: "Activare cont",
+            //     html: `<html>Pentru activarea contului te rugăm să accesezi
+            //     <a href="${link}">link-ul de activare</a>!
+            //     </html>`,
+            // };
 
-            await emailService.sendEmail(data);
+            // await emailService.sendEmail(data);
 
             res.redirect("/signup/ask-to-confirm");
         }
     } catch (err) {
         // handle dynamic validation errors
-        const validationErrors = [];
-        if (err.message === "EmailAlreadyExists") {
-            validationErrors.push({
-                field: "email",
-                msg: "Există deja un cont cu acest email",
-            });
-        }
+        // const validationErrors = [];
+        // if (err.message === "EmailAlreadyExists") {
+        //     validationErrors.push({
+        //         field: "email",
+        //         msg: "Există deja un cont cu acest email",
+        //     });
+        // }
 
-        if (validationErrors.length) {
-            return flashAndReloadSignupPage(req, res, validationErrors);
-        }
+        // if (validationErrors.length) {
+        //     return flashAndReloadSignupPage(req, res, validationErrors);
+        // }
 
         // @TODO display an error message (without details) and log the details
         return res.status(500).json(err.message);

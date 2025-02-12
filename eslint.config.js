@@ -9,7 +9,8 @@ export default [
         files: ["**/*.js"],
         languageOptions: {
             globals: {
-                ...globals.node, // to prevent 'console' or 'process' is not defined, specify that you are in an environment where 'console' indeed exists
+                ...globals.node, // to prevent 'console' or 'process' is not defined, specify that you are in an environment where they actually exist
+                ...globals.browser, // to prevent 'window' or 'document' is not defined, specify that you are in an environment where they actually exist
             },
         },
         rules: {
