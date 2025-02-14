@@ -19,8 +19,12 @@ app.engine(
 app.set("view engine", ".hbs");
 app.set("views", "./src/views");
 
-// routes for static files; in prod set NGINX to serve them
-// app.use("/", express.static(path.join(__dirname, "../public"), { maxAge: 31557600000 })); // one year in milliseconds
+// Parse an URL-encoded body (content-type:/x-www-form-urlencoded) and exposes the values in the req.body object
+app.use(express.urlencoded({ extended: false }));
+// Parse a JSON body (content-type:application/json) and exposes the values in the req.body object
+app.use(express.json());
+
+// Routes for static files. In prod use NGINX to serve them
 app.use("/", express.static(path.join(__dirname, "./public")));
 
 app.use("/", routes);

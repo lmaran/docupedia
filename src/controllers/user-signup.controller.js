@@ -70,7 +70,6 @@ export const postInviteToSignup = async (req, res) => {
 };
 
 export const getSignup = async (req, res) => {
-    console.log(123);
     const invitationCode = req.query.invitationCode;
     let isInvitationCodeValid = false;
     const uiData = {};
