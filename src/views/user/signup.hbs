@@ -14,6 +14,20 @@
 
     <form method="post" id="signupForm" action="/signup" novalidate onsubmit="saveBtn.disabled = true; return true;">
 
+    {{#each data.formFields}}
+        <div class="row mb-3">
+            <label for="{{id}}" class="col-md-3 col-form-label {{#if required}}required{{/if}}">{{label}}</label>
+            <div class="col-md-7">
+                <input type="text" name="{{id}}" id="{{id}}"
+                    class="form-control {{#if hasError}}is-invalid {{/if}}" value="{{value}}" 
+                    {{#if hasFocus}}autofocus {{/if}} />
+                <div class="text-muted mb-0">{{helpMsg}}</div>
+                <div class="invalid-feedback">{{errorMsg}}</div>
+            </div>
+        </div>
+    {{/each}}
+
+<hr>
         <div class="row mb-3">
             <label for="lastName" class="col-md-3 col-form-label required">Nume</label>
             <div class="col-md-7">

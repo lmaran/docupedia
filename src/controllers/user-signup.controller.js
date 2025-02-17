@@ -1,6 +1,7 @@
 import validator from "validator";
 import { v4 as uuidv4 } from "uuid";
 import * as userService from "../services/user.service.js";
+import * as userSignupService from "../services/user-signup.service.js";
 import * as authService from "../services/auth.service.js";
 // import * as emailService from "../services/email.service.js";
 
@@ -70,6 +71,7 @@ export const postInviteToSignup = async (req, res) => {
 };
 
 export const getSignup = async (req, res) => {
+    const formFields = userSignupService.getFormFields();
     const invitationCode = req.query.invitationCode;
     let isInvitationCodeValid = false;
     const uiData = {};
@@ -81,7 +83,7 @@ export const getSignup = async (req, res) => {
     // const errors = arrayHelper.arrayToObject(validationErrors, "field");
     // const data = arrayHelper.arrayToObject(initialValues, "field");
     const errors = {};
-    const data = {};
+    const data = { formFields };
 
     const existingUser = invitationCode && (await userService.getOneBySignupCode(invitationCode));
     if (existingUser) {
@@ -165,15 +167,15 @@ export const postSignup = async (req, res) => {
         // }
 
         if (invitationCode) {
-            const { token, refreshToken } = await authService.signupByInvitationCode(
-                firstName,
-                lastName,
-                // email,
-                password,
-                invitationCode,
-            );
+            // const { token, refreshToken } = await authService.signupByInvitationCode(
+            //     firstName,
+            //     lastName,
+            //     // email,
+            //     password,
+            //     invitationCode,
+            // );
 
-            cookieHelper.setCookies(res, token, refreshToken);
+            // cookieHelper.setCookies(res, token, refreshToken);
 
             res.redirect("/signup/confirm-success");
         } else {
