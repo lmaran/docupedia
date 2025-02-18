@@ -27,8 +27,8 @@
         </div>
     {{/each}}
 
-<hr>
-        <div class="row mb-3">
+
+        {{!-- <div class="row mb-3">
             <label for="lastName" class="col-md-3 col-form-label required">Nume</label>
             <div class="col-md-7">
                 <input type="text" name="lastName" id="lastName"
@@ -77,7 +77,7 @@
                     value="{{data.confirmPassword.val}}" {{#if uiData.confirmPassword.hasAutofocus}}autofocus {{/if}} />
                 <div class="invalid-feedback">{{errors.confirmPassword.msg}}</div>
             </div>
-        </div>
+        </div> --}}
 
         <input type="hidden" name="invitationCode" value="{{data.invitationCode}}" />
         <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" />

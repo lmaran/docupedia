@@ -11,6 +11,8 @@ import config from "../config/config.js";
 // import * as arrayHelper from "../helpers/array.helper.js";
 //const cookieHelper = require("../helpers/cookie.helper");
 import * as cookieHelper from "../helpers/cookie.helper.js";
+import * as validationHelper from "../helpers/validation.helper.js";
+import * as formHelper from "../helpers/form.helper.js";
 
 // const recaptchaService = require("../services/recaptcha.service");
 // import * as recaptchaService from "../services/recaptcha.service.js";
@@ -83,6 +85,7 @@ export const getSignup = async (req, res) => {
     // const errors = arrayHelper.arrayToObject(validationErrors, "field");
     // const data = arrayHelper.arrayToObject(initialValues, "field");
     const errors = {};
+    formHelper.setFocus(formFields, true);
     const data = { formFields };
 
     const existingUser = invitationCode && (await userService.getOneBySignupCode(invitationCode));
@@ -144,57 +147,29 @@ export const getSignup = async (req, res) => {
 
 export const postSignup = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, confirmPassword, invitationCode } = req.body;
+        //const { firstName, lastName, email, password, confirmPassword } = req.body;
 
-        // // recaptcha verification
-        // const captchaResponse = await recaptchaService.checkResponse(req.body["g-recaptcha-response"]);
-        // // console.log(captchaResponse);
-        // if (!captchaResponse.success || captchaResponse.score <= 0.5) {
-        //     // over 50% chance to be be a bot
-        //     const validationErrors = [
-        //         {
-        //             field: "page",
-        //             msg: "Nu ai trecut de validarea captcha. Mai încearcă odată!",
-        //         },
-        //     ];
-        //     return flashAndReloadSignupPage(req, res, validationErrors);
-        // }
+        const inputValues = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: req.body.password,
+            confirmPassword: req.body.confirmPassword,
+        };
 
-        // // handle static validation errors
-        // const validationErrors = getSignupStaticValidationErrors(firstName, lastName, email, password, confirmPassword);
-        // if (validationErrors.length) {
-        //     return flashAndReloadSignupPage(req, res, validationErrors);
-        // }
+        const formFields = userSignupService.getFormFields();
 
-        if (invitationCode) {
-            // const { token, refreshToken } = await authService.signupByInvitationCode(
-            //     firstName,
-            //     lastName,
-            //     // email,
-            //     password,
-            //     invitationCode,
-            // );
+        const validationResult = validationHelper.validate(inputValues, formFields);
 
-            // cookieHelper.setCookies(res, token, refreshToken);
-
-            res.redirect("/signup/confirm-success");
-        } else {
-            const activationCode = await authService.signupByUserRegistration(firstName, lastName, email, password);
-            // Send this code on email
-            // const rootUrl = config.externalUrl; // e.g. http://localhost:1417
-            // const link = `${rootUrl}/signup/confirm/${activationCode}`;
-
-            // const data = {
-            //     to: email,
-            //     subject: "Activare cont",
-            //     html: `<html>Pentru activarea contului te rugăm să accesezi
-            //     <a href="${link}">link-ul de activare</a>!
-            //     </html>`,
-            // };
-
-            // await emailService.sendEmail(data);
-
+        if (validationResult.isValid) {
+            // await authService.signupByUserRegistration(firstName, lastName, email, password);
             res.redirect("/signup/ask-to-confirm");
+        } else {
+            formHelper.setFocus(formFields, false);
+            formHelper.preserveInputValues(inputValues, formFields);
+
+            const data = { formFields };
+            res.render("user/signup", { data });
         }
     } catch (err) {
         // handle dynamic validation errors
