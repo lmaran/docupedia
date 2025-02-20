@@ -1,15 +1,16 @@
-export const setFocus = (formFields, isValid) => {
-    let firstField = null;
-    // if (isValid) firstField = formFields.find((x) => !x.isDisabled);
-    if (isValid) firstField = formFields[0];
-    else firstField = formFields.find((x) => x.hasError);
+export const setFocus = (formFields) => {
+    if (!formFields?.length) return;
 
-    firstField.hasFocus = true;
+    const firstInvalidField = formFields.find((x) => x.hasError);
+
+    if (firstInvalidField) firstInvalidField.hasFocus = true;
+    else formFields[0].hasFocus = true;
 };
 
-export const preserveInputValues = (input, formFields) => {
+export const setDefaultValues = (inputValues, formFields) => {
+    if (!inputValues || !formFields) return;
+
     formFields.forEach((x) => {
-        x.value = input[x.id]; // preserve user-entered values
+        x.value = inputValues[x.id]; // preserve user-entered values
     });
-    return formFields;
 };

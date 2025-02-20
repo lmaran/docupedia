@@ -85,7 +85,7 @@ export const getSignup = async (req, res) => {
     // const errors = arrayHelper.arrayToObject(validationErrors, "field");
     // const data = arrayHelper.arrayToObject(initialValues, "field");
     const errors = {};
-    formHelper.setFocus(formFields, true);
+    formHelper.setFocus(formFields);
     const data = { formFields };
 
     const existingUser = invitationCode && (await userService.getOneBySignupCode(invitationCode));
@@ -147,17 +147,10 @@ export const getSignup = async (req, res) => {
 
 export const postSignup = async (req, res) => {
     try {
-        //const { firstName, lastName, email, password, confirmPassword } = req.body;
-
-        const inputValues = {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            password: req.body.password,
-            confirmPassword: req.body.confirmPassword,
-        };
-
         const formFields = userSignupService.getFormFields();
+
+        const inputValues = {};
+        formFields.forEach((x) => (inputValues[x.id] = req.body[x.id]));
 
         const validationResult = validationHelper.validate(inputValues, formFields);
 
@@ -165,8 +158,8 @@ export const postSignup = async (req, res) => {
             // await authService.signupByUserRegistration(firstName, lastName, email, password);
             res.redirect("/signup/ask-to-confirm");
         } else {
-            formHelper.setFocus(formFields, false);
-            formHelper.preserveInputValues(inputValues, formFields);
+            formHelper.setFocus(formFields);
+            formHelper.setDefaultValues(inputValues, formFields);
 
             const data = { formFields };
             res.render("user/signup", { data });
