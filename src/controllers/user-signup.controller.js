@@ -1,7 +1,7 @@
 import validator from "validator";
 import { v4 as uuidv4 } from "uuid";
 import * as userService from "../services/user.service.js";
-import * as userSignupService from "../services/user-signup.service.js";
+import * as entityModelService from "../services/entity-model.service.js";
 import * as authService from "../services/auth.service.js";
 // import * as emailService from "../services/email.service.js";
 
@@ -73,7 +73,8 @@ export const postInviteToSignup = async (req, res) => {
 };
 
 export const getSignup = async (req, res) => {
-    const formFields = userSignupService.getFormFields();
+    const userModel = entityModelService.getByName("user");
+    const formFields = userModel.fields;
     const invitationCode = req.query.invitationCode;
     let isInvitationCodeValid = false;
     const uiData = {};
@@ -147,21 +148,22 @@ export const getSignup = async (req, res) => {
 
 export const postSignup = async (req, res) => {
     try {
-        const formFields = userSignupService.getFormFields();
+        const userModel = entityModelService.getByName("user");
+        // const formFields = userModel.fields;
 
         const inputValues = {};
-        formFields.forEach((x) => (inputValues[x.id] = req.body[x.id]));
+        userModel.formFields.forEach((x) => (inputValues[x.id] = req.body[x.id]));
 
-        const validationResult = validationHelper.validate(inputValues, formFields);
+        const validationResult = validationHelper.validate(inputValues, userModel);
 
         if (validationResult.isValid) {
             // await authService.signupByUserRegistration(firstName, lastName, email, password);
             res.redirect("/signup/ask-to-confirm");
         } else {
-            formHelper.setFocus(formFields);
-            formHelper.setDefaultValues(inputValues, formFields);
+            formHelper.setFocus(userModel.fields);
+            formHelper.setDefaultValues(inputValues, userModel.fields);
 
-            const data = { formFields };
+            const data = { formFields: userModel.fields };
             res.render("user/signup", { data });
         }
     } catch (err) {

@@ -1,12 +1,18 @@
 import validator from "validator";
 
-export const validate = (input, formFields) => {
-    let isValid = true; // a general flag that tell us that there is an invalid field on the form
-    const maxCharsForSingleLine = 50;
-    const maxCharsForMultiLine = 1000 * 1000;
-    const maxCharsForEmail = 50;
+const maxCharsForSingleLine = 50;
+const maxCharsForMultiLine = 1000 * 1000;
+const maxCharsForEmail = 50;
 
-    formFields.forEach((x) => {
+// const isLongerThan = (current, max) => current.length > (max || maxCharsForSingleLine);
+// const isLongerThanMessage = (current, max) => `Maxim ${max} caractere`;
+
+// if(isLongerThan("mesaj de test", 10)) console.log(isLongerThanMessage(10));
+
+export const validate = (input, userModel) => {
+    let isValid = true; // a general flag that tell us that there is an invalid field on the form
+
+    userModel.fields.forEach((x) => {
         const currentValue = input[x.id];
 
         if (x.required && !currentValue) x.errorMsg = `Câmp obligatoriu`;
@@ -20,6 +26,7 @@ export const validate = (input, formFields) => {
         } else if (x.type == "email") {
             if (currentValue.length > (x.max || maxCharsForEmail)) x.errorMsg = `Maxim ${x.max} caractere`;
             else if (!validator.isEmail(currentValue)) x.errorMsg = `Email invalid`;
+            else if (x.isUnique && 1 == 2) x.errorMsg = `Există deja o înregistrare cu această valoare`;
         }
 
         if (x.errorMsg) {
@@ -29,6 +36,6 @@ export const validate = (input, formFields) => {
     });
     return {
         isValid,
-        formFields,
+        userModel,
     };
 };
