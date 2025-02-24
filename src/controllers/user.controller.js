@@ -3,14 +3,7 @@ import { userService } from "../services/user.service.js";
 
 export const getAll = async (req, res) => {
     const data = await userService.getAll();
-    //const data = await userService.getOneByEmail("asd");
-
-    // const data = await userService;
-    console.log(data);
-    // console.log(await data);
-    // console.log(await data.getAll());
-    // res.send(data);
-    res.send("aaa");
+    res.send(data);
 };
 
 export const getUser = (req, res) => {

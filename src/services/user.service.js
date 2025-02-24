@@ -2,15 +2,10 @@ import { getDb, ObjectId } from "../helpers/mongo.helper.js";
 import { createGenericService } from "./generic.service.js";
 
 const collectionName = "users";
-const repo = createGenericService(collectionName);
+const genericService = createGenericService(collectionName);
 
 export const userService = {
-    // ...repo,
-    getAll: repo.getAll,
-    getOneById: repo.getOneById,
-    insertOne: repo.insertOne,
-    updateOne: repo.updateOne,
-    deleteOneById: repo.deleteOneById,
+    ...genericService,
 
     getOneByEmail: async (email) => {
         const db = await getDb();

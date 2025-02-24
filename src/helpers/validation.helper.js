@@ -1,4 +1,5 @@
 import validator from "validator";
+import { userService } from "../services/user.service.js";
 
 const maxCharsDefault = 1000 * 1000;
 
@@ -8,7 +9,10 @@ const isLongerThan = (crt, max) => crt.length > max;
 const isShorterThan = (crt, min) => crt.length < min;
 const isNotAnEmail = (crt) => !validator.isEmail(crt);
 const isDifferentFromMirror = (crt, mirror) => crt != mirror;
-const isNotUnique = (crt) => 1 == 2; // TODO
+const isNotUnique = async (email) => {
+    const existingUser = await userService.getOneByEmail(email);
+    if (existingUser) return true;
+};
 
 const isRequiredMessage = () => `Câmp obligatoriu`;
 const isLongerThanDefaultMessage = () => `Maxim ${maxCharsDefault} caractere`;
@@ -18,10 +22,13 @@ const isNotAnEmailMMessage = () => `Email invalid`;
 const isDifferentFromMirrorMessage = (crt, mirror) => `Nu coincide cu valoarea din câmpul "${mirror}"`;
 const isNotUniqueMMessage = () => `Există deja o înregistrare cu această valoare`;
 
-export const validate = (input, userModel) => {
+export const validate = async (input, userModel) => {
     let isValid = true; // a general flag that tell us that there is an invalid field on the form
 
-    userModel.fields.forEach((x) => {
+    //console.log(userModel.formFields);
+
+    // userModel.formFields.forEach((x) => {
+    for (const x of userModel.formFields) {
         const currentValue = input[x.id];
 
         // All fields
@@ -38,14 +45,14 @@ export const validate = (input, userModel) => {
             else if (x.min && isShorterThan(currentValue, x.min)) x.errorMsg = isShorterThanMessage(x.min);
         } else if (x.type == "email") {
             if (isNotAnEmail(currentValue)) x.errorMsg = isNotAnEmailMMessage();
-            else if (x.isUnique && isNotUnique(currentValue)) x.errorMsg = isNotUniqueMMessage();
+            else if (x.isUnique && (await isNotUnique(currentValue))) x.errorMsg = isNotUniqueMMessage();
         }
 
         if (x.errorMsg) {
             x.hasError = true;
             isValid = false;
         }
-    });
+    }
     return {
         isValid,
         userModel,

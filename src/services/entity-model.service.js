@@ -2,8 +2,6 @@
 
 // const collectionName = "users";
 
-export const getByName = (name) => entities.find((x) => x.name == name);
-
 const entities = [
     {
         name: "user",
@@ -55,3 +53,5 @@ const entities = [
         ],
     },
 ];
+
+export const getByName = (name) => entities.find((x) => x.name == name);

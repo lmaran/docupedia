@@ -1,6 +1,6 @@
 import validator from "validator";
 import { v4 as uuidv4 } from "uuid";
-import * as userService from "../services/user.service.js";
+import { userService } from "../services/user.service.js";
 import * as entityModelService from "../services/entity-model.service.js";
 import * as authService from "../services/auth.service.js";
 // import * as emailService from "../services/email.service.js";
@@ -74,96 +74,42 @@ export const postInviteToSignup = async (req, res) => {
 
 export const getSignup = async (req, res) => {
     const userModel = entityModelService.getByName("user");
-    const formFields = userModel.fields;
-    const invitationCode = req.query.invitationCode;
-    let isInvitationCodeValid = false;
-    const uiData = {};
+    const formFields = userModel.formFields;
 
-    // // Get an array of flash errors (or initial values) by passing the key
-    // const validationErrors = req.flash("validationErrors");
-    // const initialValues = req.flash("initialValues");
+    const newFormFields = formFields.map((x) => ({ ...x })); // immutable
+    // console.log(newFormFields);
 
-    // const errors = arrayHelper.arrayToObject(validationErrors, "field");
-    // const data = arrayHelper.arrayToObject(initialValues, "field");
-    const errors = {};
-    formHelper.setFocus(formFields);
-    const data = { formFields };
+    console.log(formFields[0]);
+    formHelper.setFocus(newFormFields);
+    console.log(formFields[0]);
 
-    const existingUser = invitationCode && (await userService.getOneBySignupCode(invitationCode));
-    if (existingUser) {
-        if (existingUser.status === "active") {
-            const data = {
-                message: "Contul aferent accestei invitații a fost deja <strong>activat</strong>!",
-                userIsNotAuthenticated: !req.user,
-            };
-            return res.render("user/signup-confirm-info", data);
-        }
-
-        isInvitationCodeValid = true;
-
-        // populate initial values from DB
-        //if (initialValues.length === 0 && existingUser.invitationInfo) {
-        data.firstName = {
-            field: "firstName",
-            val: existingUser.invitationInfo.firstName,
-        };
-        data.lastName = {
-            field: "lastName",
-            val: existingUser.invitationInfo.lastName,
-        };
-        data.email = {
-            field: "email",
-            val: existingUser.email,
-        };
-        //}
-    }
-
-    // // set autofocus properties
-    // if (validationErrors.length) {
-    //     uiData[validationErrors[0].field] = { hasAutofocus: true }; // focus on first field with error
-    // } else {
-    //     // no errors (e.g. first page request)s
-    //     if (isInvitationCodeValid) {
-    //         uiData.password = { hasAutofocus: true };
-    //     } else {
-    //         uiData.lastName = { hasAutofocus: true };
-    //     }
-    // }
-
-    // set readOnly properties
-    if (isInvitationCodeValid) {
-        uiData.email = { isReadOnly: true };
-    }
-
-    // save invitationCode into an hidden field to be sent at POST
-    if (isInvitationCodeValid) {
-        data.invitationCode = invitationCode;
-    }
-
-    data.recaptchaSiteKey = config.recaptchaSiteKey;
+    const data = { formFields: newFormFields };
 
     //res.send(data);
-    res.render("user/signup", { data, uiData, errors });
+    res.render("user/signup", { data });
 };
 
 export const postSignup = async (req, res) => {
     try {
         const userModel = entityModelService.getByName("user");
-        // const formFields = userModel.fields;
+        // const formFields = userModel.formFields;
 
         const inputValues = {};
         userModel.formFields.forEach((x) => (inputValues[x.id] = req.body[x.id]?.trim()));
 
-        const validationResult = validationHelper.validate(inputValues, userModel);
+        const validationResult = await validationHelper.validate(inputValues, userModel);
+
+        console.log(validationResult);
 
         if (validationResult.isValid) {
             // await authService.signupByUserRegistration(firstName, lastName, email, password);
             res.redirect("/signup/ask-to-confirm");
         } else {
-            formHelper.setFocus(userModel.fields);
-            formHelper.setDefaultValues(inputValues, userModel.fields);
+            const newFormFields = userModel.formFields.map((x) => x); // immutable
+            formHelper.setFocus(newFormFields);
+            formHelper.setDefaultValues(inputValues, newFormFields);
 
-            const data = { formFields: userModel.fields };
+            const data = { formFields: newFormFields };
             res.render("user/signup", { data });
         }
     } catch (err) {

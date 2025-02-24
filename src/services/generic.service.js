@@ -11,7 +11,7 @@ export const createGenericService = (collectionName) => {
                 throw new Error(`Error creating users: ${error.message}`);
             }
         },
-        async getAll() {
+        getAll: async () => {
             try {
                 const db = await getDb();
                 return await db.collection(collectionName).find().project({ password: 0 }).toArray(); // if there are no items, return an empty array
