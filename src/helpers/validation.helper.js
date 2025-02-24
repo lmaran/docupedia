@@ -1,17 +1,17 @@
 import validator from "validator";
 
-const maxCharsForSingleLine = 50;
-const maxCharsForMultiLine = 1000 * 1000;
-const maxCharsForEmail = 50;
+const maxCharsDefault = 1000 * 1000;
 
 const isEmpty = (crt) => !crt;
-const isLongerThan = (crt, max) => crt.length > (max || maxCharsForSingleLine);
+const isLongerThanDefault = (crt) => crt.length > maxCharsDefault;
+const isLongerThan = (crt, max) => crt.length > max;
 const isShorterThan = (crt, min) => crt.length < min;
 const isNotAnEmail = (crt) => !validator.isEmail(crt);
 const isDifferentFromMirror = (crt, mirror) => crt != mirror;
 const isNotUnique = (crt) => 1 == 2; // TODO
 
 const isRequiredMessage = () => `Câmp obligatoriu`;
+const isLongerThanDefaultMessage = () => `Maxim ${maxCharsDefault} caractere`;
 const isLongerThanMessage = (max) => `Maxim ${max} caractere`;
 const isShorterThanMessage = (min) => `Minim ${min} caractere`;
 const isNotAnEmailMMessage = () => `Email invalid`;
@@ -24,7 +24,10 @@ export const validate = (input, userModel) => {
     userModel.fields.forEach((x) => {
         const currentValue = input[x.id];
 
+        // All fields
         if (x.required && isEmpty(currentValue)) x.errorMsg = isRequiredMessage();
+        else if (isLongerThanDefault(currentValue)) x.errorMsg = isLongerThanDefaultMessage();
+        // Specific fields
         else if (x.type == "singleLine") {
             if (x.max && isLongerThan(currentValue, x.max)) x.errorMsg = isLongerThanMessage(x.max);
             else if (x.min && isShorterThan(currentValue, x.min)) x.errorMsg = isShorterThanMessage(x.min);
@@ -34,8 +37,7 @@ export const validate = (input, userModel) => {
             if (x.max && isLongerThan(currentValue, x.max)) x.errorMsg = isLongerThanMessage(x.max);
             else if (x.min && isShorterThan(currentValue, x.min)) x.errorMsg = isShorterThanMessage(x.min);
         } else if (x.type == "email") {
-            if (x.max && isLongerThan(currentValue, x.max)) x.errorMsg = isLongerThanMessage(x.max);
-            else if (isNotAnEmail(currentValue)) x.errorMsg = isNotAnEmailMMessage();
+            if (isNotAnEmail(currentValue)) x.errorMsg = isNotAnEmailMMessage();
             else if (x.isUnique && isNotUnique(currentValue)) x.errorMsg = isNotUniqueMMessage();
         }
 

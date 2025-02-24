@@ -1,76 +1,39 @@
 import { getDb, ObjectId } from "../helpers/mongo.helper.js";
+import { createGenericService } from "./generic.service.js";
 
 const collectionName = "users";
+const repo = createGenericService(collectionName);
 
-export const insertOne = async (item) => {
-    try {
+export const userService = {
+    // ...repo,
+    getAll: repo.getAll,
+    getOneById: repo.getOneById,
+    insertOne: repo.insertOne,
+    updateOne: repo.updateOne,
+    deleteOneById: repo.deleteOneById,
+
+    getOneByEmail: async (email) => {
         const db = await getDb();
-        const result = await db.collection(collectionName).insertOne(item);
-        return result.insertedId;
-    } catch (error) {
-        throw new Error(`Error creating users: ${error.message}`);
-    }
-};
+        return db.collection(collectionName).findOne({ email: email.toLowerCase() });
+    },
 
-export const getAll = async () => {
-    try {
+    getOneBySignupCode: async (signupCode) => {
         const db = await getDb();
-        return await db.collection(collectionName).find().project({ password: 0 }).toArray(); // if there are no items, return an empty array
-    } catch (error) {
-        throw new Error(`Error retrieving users: ${error.message}`);
-    }
-};
+        return db.collection(collectionName).findOne({ signupCode });
+    },
 
-export const getOneById = async (id) => {
-    try {
+    getOneByResetPasswordCode: async (resetPasswordCode) => {
         const db = await getDb();
-        return await db.collection(collectionName).findOne({ _id: ObjectId.createFromHexString(id) }); // if not found, return null
-    } catch (error) {
-        throw new Error(`Error retrieving user: ${error.message}`);
-    }
-};
+        return db.collection(collectionName).findOne({ resetPasswordCode });
+    },
 
-export const updateOne = async (id, updatedFields) => {
-    try {
+    getOneByIdWithoutPsw: async (id) => {
         const db = await getDb();
-        const result = await db.collection(collectionName).updateOne({ _id: ObjectId.createFromHexString(id) }, { $set: updatedFields });
-        return result.matchedCount;
-    } catch (error) {
-        throw new Error(`Error updating user: ${error.message}`);
-    }
-};
+        return db.collection(collectionName).findOne({ _id: new ObjectId(id) }, { projection: { password: 0 } });
+    },
 
-export const deleteOneById = async (id) => {
-    try {
+    resetPassword: async (userIdAsString, modifiedFields, removedFields) => {
         const db = await getDb();
-        const result = await db.collection(collectionName).deleteOne({ _id: ObjectId.createFromHexString(id) });
-        return result.deletedCount;
-    } catch (error) {
-        throw new Error(`Error deleting user: ${error.message}`);
-    }
-};
-
-export const getOneByEmail = async (email) => {
-    const db = await getDb();
-    return db.collection(collectionName).findOne({ email: email.toLowerCase() });
-};
-
-export const getOneBySignupCode = async (signupCode) => {
-    const db = await getDb();
-    return db.collection(collectionName).findOne({ signupCode });
-};
-
-export const getOneByResetPasswordCode = async (resetPasswordCode) => {
-    const db = await getDb();
-    return db.collection(collectionName).findOne({ resetPasswordCode });
-};
-
-export const getOneByIdWithoutPsw = async (id) => {
-    const db = await getDb();
-    return db.collection(collectionName).findOne({ _id: new ObjectId(id) }, { projection: { password: 0 } });
-};
-
-export const resetPassword = async (userIdAsString, modifiedFields, removedFields) => {
-    const db = await getDb();
-    return db.collection(collectionName).updateOne({ _id: new ObjectId(userIdAsString) }, { $set: modifiedFields, $unset: removedFields });
+        return db.collection(collectionName).updateOne({ _id: new ObjectId(userIdAsString) }, { $set: modifiedFields, $unset: removedFields });
+    },
 };

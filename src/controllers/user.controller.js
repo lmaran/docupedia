@@ -1,8 +1,16 @@
-import * as userService from "../services/user.service.js";
+// import * as userService from "../services/user.service.js";
+import { userService } from "../services/user.service.js";
 
 export const getAll = async (req, res) => {
     const data = await userService.getAll();
-    res.send(data);
+    //const data = await userService.getOneByEmail("asd");
+
+    // const data = await userService;
+    console.log(data);
+    // console.log(await data);
+    // console.log(await data.getAll());
+    // res.send(data);
+    res.send("aaa");
 };
 
 export const getUser = (req, res) => {
