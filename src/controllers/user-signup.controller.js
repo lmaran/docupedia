@@ -152,7 +152,7 @@ export const postSignup = async (req, res) => {
         // const formFields = userModel.fields;
 
         const inputValues = {};
-        userModel.formFields.forEach((x) => (inputValues[x.id] = req.body[x.id]));
+        userModel.formFields.forEach((x) => (inputValues[x.id] = req.body[x.id]?.trim()));
 
         const validationResult = validationHelper.validate(inputValues, userModel);
 

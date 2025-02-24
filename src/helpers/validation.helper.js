@@ -4,10 +4,19 @@ const maxCharsForSingleLine = 50;
 const maxCharsForMultiLine = 1000 * 1000;
 const maxCharsForEmail = 50;
 
-// const isLongerThan = (current, max) => current.length > (max || maxCharsForSingleLine);
-// const isLongerThanMessage = (current, max) => `Maxim ${max} caractere`;
+const isEmpty = (crt) => !crt;
+const isLongerThan = (crt, max) => crt.length > (max || maxCharsForSingleLine);
+const isShorterThan = (crt, min) => crt.length < min;
+const isNotAnEmail = (crt) => !validator.isEmail(crt);
+const isDifferentFromMirror = (crt, mirror) => crt != mirror;
+const isNotUnique = (crt) => 1 == 2; // TODO
 
-// if(isLongerThan("mesaj de test", 10)) console.log(isLongerThanMessage(10));
+const isRequiredMessage = () => `Câmp obligatoriu`;
+const isLongerThanMessage = (max) => `Maxim ${max} caractere`;
+const isShorterThanMessage = (min) => `Minim ${min} caractere`;
+const isNotAnEmailMMessage = () => `Email invalid`;
+const isDifferentFromMirrorMessage = (crt, mirror) => `Nu coincide cu valoarea din câmpul "${mirror}"`;
+const isNotUniqueMMessage = () => `Există deja o înregistrare cu această valoare`;
 
 export const validate = (input, userModel) => {
     let isValid = true; // a general flag that tell us that there is an invalid field on the form
@@ -15,18 +24,19 @@ export const validate = (input, userModel) => {
     userModel.fields.forEach((x) => {
         const currentValue = input[x.id];
 
-        if (x.required && !currentValue) x.errorMsg = `Câmp obligatoriu`;
+        if (x.required && isEmpty(currentValue)) x.errorMsg = isRequiredMessage();
         else if (x.type == "singleLine") {
-            if (x.max && currentValue.length > (x.max || maxCharsForSingleLine)) x.errorMsg = `Maxim ${x.max} caractere`;
-            else if (x.min && currentValue.length < x.min) x.errorMsg = `Minim ${x.min} caractere`;
-            else if (x.mirrorField && currentValue != input[x.mirrorField]) x.errorMsg = `Nu coincide cu valoarea din câmpul "${x.mirrorField}"`;
+            if (x.max && isLongerThan(currentValue, x.max)) x.errorMsg = isLongerThanMessage(x.max);
+            else if (x.min && isShorterThan(currentValue, x.min)) x.errorMsg = isShorterThanMessage(x.min);
+            else if (x.mirrorField && isDifferentFromMirror(currentValue, input[x.mirrorField]))
+                x.errorMsg = isDifferentFromMirrorMessage(x.mirrorField);
         } else if (x.type == "multiLine") {
-            if (currentValue.length > (x.max || maxCharsForMultiLine)) x.errorMsg = `Maxim ${x.max} caractere`;
-            else if (x.min && currentValue.length < x.min) x.errorMsg = `Minim ${x.min} caractere`;
+            if (x.max && isLongerThan(currentValue, x.max)) x.errorMsg = isLongerThanMessage(x.max);
+            else if (x.min && isShorterThan(currentValue, x.min)) x.errorMsg = isShorterThanMessage(x.min);
         } else if (x.type == "email") {
-            if (currentValue.length > (x.max || maxCharsForEmail)) x.errorMsg = `Maxim ${x.max} caractere`;
-            else if (!validator.isEmail(currentValue)) x.errorMsg = `Email invalid`;
-            else if (x.isUnique && 1 == 2) x.errorMsg = `Există deja o înregistrare cu această valoare`;
+            if (x.max && isLongerThan(currentValue, x.max)) x.errorMsg = isLongerThanMessage(x.max);
+            else if (isNotAnEmail(currentValue)) x.errorMsg = isNotAnEmailMMessage();
+            else if (x.isUnique && isNotUnique(currentValue)) x.errorMsg = isNotUniqueMMessage();
         }
 
         if (x.errorMsg) {
