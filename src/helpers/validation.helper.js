@@ -55,6 +55,6 @@ export const validate = async (input, userModel) => {
     }
     return {
         isValid,
-        userModel,
+        formFields: userModel.formFields,
     };
 };

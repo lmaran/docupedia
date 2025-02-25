@@ -76,12 +76,10 @@ export const getSignup = async (req, res) => {
     const userModel = entityModelService.getByName("user");
     const formFields = userModel.formFields;
 
-    const newFormFields = formFields.map((x) => ({ ...x })); // immutable
+    // const newFormFields = formFields.map((x) => ({ ...x })); // immutable
     // console.log(newFormFields);
 
-    console.log(formFields[0]);
-    formHelper.setFocus(newFormFields);
-    console.log(formFields[0]);
+    const newFormFields = formHelper.setFocus(formFields);
 
     const data = { formFields: newFormFields };
 
@@ -105,7 +103,7 @@ export const postSignup = async (req, res) => {
             // await authService.signupByUserRegistration(firstName, lastName, email, password);
             res.redirect("/signup/ask-to-confirm");
         } else {
-            const newFormFields = userModel.formFields.map((x) => x); // immutable
+            const newFormFields = userModel.formFields.map((x) => ({ ...x })); // immutable
             formHelper.setFocus(newFormFields);
             formHelper.setDefaultValues(inputValues, newFormFields);
 
