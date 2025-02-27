@@ -14,6 +14,39 @@ const isNotUnique = async (email) => {
     if (existingUser) return true;
 };
 
+// https://formvalidation.io/guide/examples/creating-a-custom-validator/
+const emailValidator = function () {
+    return {
+        validate: function (input) {
+            const value = input.value;
+
+            if (!validator.isEmail(value)) {
+                return {
+                    isValid: false,
+                    message: "Email invalid",
+                };
+            }
+
+            return {
+                isValid: true,
+            };
+        },
+    };
+};
+
+// const validateEmail = async (currentValue) => {
+//     const isValid = true,
+//         message = "";
+
+//     if (isNotAnEmail(currentValue)) x.errorMsg = isNotAnEmailMMessage();
+//     else if (x.isUnique && (await isNotUnique(currentValue))) x.errorMsg = isNotUniqueMMessage();
+
+//     return {
+//         isValid,
+//         message,
+//     };
+// };
+
 const isRequiredMessage = () => `Câmp obligatoriu`;
 const isLongerThanDefaultMessage = () => `Maxim ${maxCharsDefault} caractere`;
 const isLongerThanMessage = (max) => `Maxim ${max} caractere`;

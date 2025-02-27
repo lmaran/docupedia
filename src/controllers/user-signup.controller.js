@@ -95,7 +95,8 @@ export const postSignup = async (req, res) => {
         const inputValues = {};
         userModel.formFields.forEach((x) => (inputValues[x.id] = req.body[x.id]?.trim()));
 
-        const validationResult = await validationHelper.validate(inputValues, userModel);
+        const transformResult = await transformHelper.transform(inputValues, userModel);
+        const validationResult = await validationHelper.validate(transformResult.result, userModel);
 
         console.log(validationResult);
 
