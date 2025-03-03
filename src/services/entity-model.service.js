@@ -9,15 +9,16 @@ const entities = [
         labelName: "utilizator",
         labelPluralName: "utilizatori",
 
-        formFields2: [
+        formFieldsDemo: [
             {
-                id: "lastName",
+                id: "confirmPassword",
                 type: "string", // https://learn.microsoft.com/en-us/dynamics365/customer-insights/journeys/marketing-fields#field-type-and-format-options
 
                 styles: {
                     label: "Nume",
                     displayType: { type: "multiline", lines: 5 },
-                    message: "",
+                    helpText: "Minim 6 caractere",
+                    defaultValue: "N/A",
                     autofocus: true,
                 },
 
@@ -25,48 +26,13 @@ const entities = [
                     required: true,
                     maxLength: { max: 50, message: "Maxim {{max}} caractere" },
                     minLength: 5,
-                },
-                transformers: {
-                    trim: true, // implicit for all fields
-                },
-            },
-            {
-                id: "email",
-                type: "string",
-
-                styles: {
-                    label: "Email",
-                    displayType: "singleline", // implicit pentru string
-                    helpText: "We'll never share your email with anyone else.",
-                    defaultValue: "The default label shown for the field when you add it to a form.",
-                },
-
-                validators: {
-                    required: true,
+                    enum: ["Coffee", "Tea"],
                     isEmail: true,
                     isUnique: true, // custom validator
-                },
-                transformers: {
-                    trim: true,
-                    toLowerCase: true,
-                },
-            },
-            {
-                id: "confirmPassword",
-                type: "string",
-
-                styles: {
-                    label: "Confirmă parola",
-                    displayType: "singleline", // implicit pentru string
-                    helpText: "Minim 6 caractere",
-                },
-
-                validators: {
-                    required: true,
                     isIdentical: { enabled: true, source: "password", message: `Nu coincide cu {{source}}` },
                 },
                 transformers: {
-                    trim: true,
+                    trim: true, // implicit for all fields
                     toLowerCase: true,
                 },
             },
