@@ -1,17 +1,68 @@
+import { readFile } from "fs/promises";
 // import { getDb, ObjectId } from "../helpers/mongo.helper.js";
 
 // const collectionName = "users";
 
+const validators = {
+    type: function (v, msg) {
+        return { isValid: true, message: msg || "" };
+    },
+    required: function (v, msg) {
+        return { isValid: true, message: msg || "" };
+    },
+    identical: function (v, msg) {
+        return { isValid: true, message: msg || "" };
+    },
+    email: function (v, msg) {
+        return { isValid: true, message: msg || "" };
+    },
+};
+
+const validatorsAsync = {
+    unique: async function (v, msg) {
+        return { isValid: true, message: msg || "" };
+    },
+};
+
+const customValidators = {
+    cnp: function (v, msg) {
+        return { isValid: true, message: msg || "" };
+    },
+};
+const customValidatorsAsync = {
+    temperature: function (v, msg) {
+        return { isValid: true, message: msg || "" };
+    },
+};
+
+const userValidationResult = {
+    isValid: false,
+    errors: {
+        lastName: "Câmp obligatoriu",
+        email: "Email invalid",
+        confirmPassword: "Nu coincide cu parola",
+    },
+};
+const userSchema = getUserSchema();
+
+const userEntity = {
+    schema: userSchema,
+    transformers: {
+        trim: true, // implicit for all fields
+        toLowerCase: true,
+    },
+};
+
 const entities = [
+    userEntity,
     {
         name: "user",
         pluralName: "users",
         labelName: "utilizator",
         labelPluralName: "utilizatori",
 
-        formFieldsDemo: [
-            {
-                id: "confirmPassword",
+        fieldsDemo: {
+            confirmPassword: {
                 type: "string", // https://learn.microsoft.com/en-us/dynamics365/customer-insights/journeys/marketing-fields#field-type-and-format-options
 
                 styles: {
@@ -29,14 +80,14 @@ const entities = [
                     enum: ["Coffee", "Tea"],
                     isEmail: true,
                     isUnique: true, // custom validator
-                    isIdentical: { enabled: true, source: "password", message: `Nu coincide cu {{source}}` },
+                    isIdentical: { enabled: true, source: "password", message: `Nu coincide cu {{$.password}}` },
                 },
                 transformers: {
                     trim: true, // implicit for all fields
                     toLowerCase: true,
                 },
             },
-        ],
+        },
 
         formFields: [
             {
@@ -85,5 +136,10 @@ const entities = [
         ],
     },
 ];
+
+export const getUserSchema = async () => {
+    const data = await readFile("./user.schema.json", "utf-8");
+    return JSON.parse(data);
+};
 
 export const getByName = (name) => entities.find((x) => x.name == name);

@@ -1,0 +1,7 @@
+[
+    {
+        "name": "cnp",
+        "type": "sync",
+        "functionAsString": "function cnp(a) { if(a!=1)return {isValid:false, message:msg||'CNP invalid'}; else return {isValid:true} }"
+    }
+]

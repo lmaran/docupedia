@@ -1,0 +1,8 @@
+{
+    "firstName": { "type": "string", "required": true },
+    "lastName": { "type": "string", "required": { "message": "Câmp obligatoriu" } },
+    "age": { "type": "integer", "max": 100, "min": { "min": 18, "message": "Persoana trebuie să fie majoră" } },
+    "email": { "type": "string", "required": true, "email": true, "unique": true },
+    "password": { "type": "string", "required": true, "minLength": { "min": 6, "message": "Minim 6 caractere" } },
+    "confirmPassword": { "type": "string", "required": true, "identical": { "source": "$.password", "message": "Nu coincide cu parola" } }
+}
