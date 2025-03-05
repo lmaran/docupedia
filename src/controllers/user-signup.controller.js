@@ -87,44 +87,37 @@ export const getSignup = async (req, res) => {
     res.render("user/signup", { data });
 };
 
+const getUserFromRequest = (userModel, req) => {
+    const newUser = {};
+    userModel.formFields.forEach((x) => (newUser[x.id] = req.body[x.id]?.trim()));
+    return newUser;
+};
+
 export const postSignup = async (req, res) => {
     try {
-        const userModel = entityModelService.getByName("user");
-        // const formFields = userModel.formFields;
+        const formFields = getModel("user", "createForm"); // a list of fields, in the order they appear on the form
+        const inputData = getUserFromRequest(formFields, req);
 
-        const inputValues = {};
-        userModel.formFields.forEach((x) => (inputValues[x.id] = req.body[x.id]?.trim()));
+        const schema = getSchema("user"); // details about each field
+        const validationResult = await validationHelper.validate(inputData, schema);
 
-        const transformResult = await transformHelper.transform(inputValues, userModel);
-        const validationResult = await validationHelper.validate(transformResult.result, userModel);
+        // const userModel = entityModelService.getByName("user");
 
-        console.log(validationResult);
+        //const transformResult = await transformHelper.transform(inputValues, userModel); // nu mai trebuie
+        //const validationResult = await validationHelper.validate(transformResult.result, userModel);
 
-        if (validationResult.isValid) {
-            // await authService.signupByUserRegistration(firstName, lastName, email, password);
-            res.redirect("/signup/ask-to-confirm");
-        } else {
-            const newFormFields = userModel.formFields.map((x) => ({ ...x })); // immutable
-            formHelper.setFocus(newFormFields);
-            formHelper.setDefaultValues(inputValues, newFormFields);
+        if (!validationResult.isValid) {
+            // const newFormFields = userModel.formFields.map((x) => ({ ...x })); // immutable
+            const viewData = formHelper.setViewData(inputData, validationResult); // set default values
+            // formHelper.setFocus(newFormFields);
 
-            const data = { formFields: newFormFields };
-            res.render("user/signup", { data });
+            // const data = { formFields: newFormFields };
+            return res.render("user/signup", { viewData });
         }
+
+        // await authService.signupByUserRegistration(firstName, lastName, email, password);
+        res.redirect("/signup/ask-to-confirm");
     } catch (err) {
-        // handle dynamic validation errors
-        // const validationErrors = [];
-        // if (err.message === "EmailAlreadyExists") {
-        //     validationErrors.push({
-        //         field: "email",
-        //         msg: "Există deja un cont cu acest email",
-        //     });
-        // }
-
-        // if (validationErrors.length) {
-        //     return flashAndReloadSignupPage(req, res, validationErrors);
-        // }
-
         // @TODO display an error message (without details) and log the details
         return res.status(500).json(err.message);
     }

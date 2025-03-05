@@ -16,6 +16,9 @@ const validators = {
     email: function (v, msg) {
         return { isValid: true, message: msg || "" };
     },
+    lowercase: function (v, msg) {
+        return { isValid: true, message: msg || "" };
+    },
 };
 
 const validatorsAsync = {
