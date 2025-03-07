@@ -95,11 +95,10 @@ const getUserFromRequest = (userModel, req) => {
 
 export const postSignup = async (req, res) => {
     try {
-        const formFields = getModel("user", "createForm"); // a list of fields, in the order they appear on the form
-        const inputData = getUserFromRequest(formFields, req);
-
+        // const formFields = getModel("user", "createForm"); // a list of fields, in the order they appear on the form
+        const data = getDataFromRequest(req);
         const schema = getSchema("user"); // details about each field
-        const validationResult = await validationHelper.validate(inputData, schema);
+        const validationResult = await validationHelper.validate(data, schema);
 
         // const userModel = entityModelService.getByName("user");
 
@@ -108,7 +107,7 @@ export const postSignup = async (req, res) => {
 
         if (!validationResult.isValid) {
             // const newFormFields = userModel.formFields.map((x) => ({ ...x })); // immutable
-            const viewData = formHelper.setViewData(inputData, validationResult); // set default values
+            const viewData = formHelper.setViewData(data, validationResult.error); // set default values
             // formHelper.setFocus(newFormFields);
 
             // const data = { formFields: newFormFields };

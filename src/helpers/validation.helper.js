@@ -88,6 +88,7 @@ export const validate = async (input, userModel) => {
     }
     return {
         isValid,
-        formFields: userModel.formFields,
+        // formFields: userModel.formFields,
+        errors,
     };
 };
