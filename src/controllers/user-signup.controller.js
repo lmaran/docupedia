@@ -12,6 +12,7 @@ import config from "../config/config.js";
 //const cookieHelper = require("../helpers/cookie.helper");
 import * as cookieHelper from "../helpers/cookie.helper.js";
 import * as validationHelper from "../helpers/validation.helper.js";
+import * as requestHelper from "../helpers/request.helper.js";
 import * as formHelper from "../helpers/form.helper.js";
 
 // const recaptchaService = require("../services/recaptcha.service");
@@ -87,18 +88,23 @@ export const getSignup = async (req, res) => {
     res.render("user/signup", { data });
 };
 
-const getUserFromRequest = (userModel, req) => {
-    const newUser = {};
-    userModel.formFields.forEach((x) => (newUser[x.id] = req.body[x.id]?.trim()));
-    return newUser;
-};
+// const getUserFromRequest = (userModel, req) => {
+//     const newUser = {};
+//     userModel.formFields.forEach((x) => (newUser[x.id] = req.body[x.id]?.trim()));
+//     return newUser;
+// };
 
 export const postSignup = async (req, res) => {
     try {
         // const formFields = getModel("user", "createForm"); // a list of fields, in the order they appear on the form
-        const data = getDataFromRequest(req);
-        const schema = getSchema("user"); // details about each field
-        const validationResult = await validationHelper.validate(data, schema);
+        const formFields = [{ id: "firstName" }, { id: "lastName" }, { id: "email" }, { id: "password" }, { id: "confirmPassword" }];
+        // In req.body the fields are sorted alphabetically. Also there are prototype properties and also technical fields (e.g. recaptcha). So to extract data from request we need a list of fields on the form
+        const data = requestHelper.getDataFromRequestBody(req.body, formFields);
+        console.log(data);
+
+        // const schema = getSchema("user"); // details about each field
+        // const validationResult = await validationHelper.validate(data, schema);
+        const validationResult = { isValid: true };
 
         // const userModel = entityModelService.getByName("user");
 

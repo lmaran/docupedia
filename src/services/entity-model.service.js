@@ -3,6 +3,13 @@ import { readFile } from "fs/promises";
 
 // const collectionName = "users";
 
+export const getUserSchema = async () => {
+    const data = await readFile("./user.schema.json", "utf-8");
+    return JSON.parse(data);
+};
+
+export const getByName = (name) => entities.find((x) => x.name == name);
+
 const validators = {
     type: function (v, msg) {
         return { isValid: true, message: msg || "" };
@@ -46,7 +53,8 @@ const userValidationResult = {
         confirmPassword: "Nu coincide cu parola",
     },
 };
-const userSchema = getUserSchema();
+// const userSchema = getUserSchema();
+const userSchema = {};
 
 const userEntity = {
     schema: userSchema,
@@ -139,10 +147,3 @@ const entities = [
         ],
     },
 ];
-
-export const getUserSchema = async () => {
-    const data = await readFile("./user.schema.json", "utf-8");
-    return JSON.parse(data);
-};
-
-export const getByName = (name) => entities.find((x) => x.name == name);

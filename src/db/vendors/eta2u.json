@@ -1,0 +1,5 @@
+{
+    "_id": "eta2u",
+    "customers": [{ "_id": "aquatim" }, { "_id": "pmt" }],
+    "apps": [{ "_id": "app1" }, { "_id": "app2" }]
+}
