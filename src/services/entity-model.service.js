@@ -4,7 +4,7 @@ import { readFile } from "fs/promises";
 // const collectionName = "users";
 
 export const getUserSchema = async () => {
-    const data = await readFile("./user.schema.json", "utf-8");
+    const data = await readFile("../db/user.schema.json", "utf-8");
     return JSON.parse(data);
 };
 

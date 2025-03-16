@@ -14,7 +14,7 @@
 
     <form method="post" id="signupForm" action="/signup" novalidate onsubmit="saveBtn.disabled = true; return true;">
 
-    {{#each data.formFields}}
+    {{#each formFields}}
         <div class="row mb-3">
             <label for="{{id}}" class="col-md-3 col-form-label {{#if required}}required{{/if}}">{{label}}</label>
             <div class="col-md-7">

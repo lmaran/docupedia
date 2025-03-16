@@ -1,0 +1,19 @@
+{
+    "_id": "507f191e810c19729de860ea",
+    "name": "Docupedia",
+    "description": "Documentații și note",
+    "customerId": "",
+    "entities": ["user"],
+    "dataSources": [],
+    "validationRules": [
+        {
+            "name": "startsWith",
+            "params": "value, char",
+            "body": "    return value.startsWith(char) ? null : `Must start with \"${char}\".`;"
+        }
+    ],
+    "validationMessages": {
+        "minLength": "Oops! Too short, must be at least {0} characters.",
+        "startsWith": "Promo codes should always start with PROMO."
+    }
+}

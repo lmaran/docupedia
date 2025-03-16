@@ -55,37 +55,49 @@ const isNotAnEmailMMessage = () => `Email invalid`;
 const isDifferentFromMirrorMessage = (crt, mirror) => `Nu coincide cu valoarea din câmpul "${mirror}"`;
 const isNotUniqueMMessage = () => `Există deja o înregistrare cu această valoare`;
 
-export const validate = async (input, userModel) => {
-    let isValid = true; // a general flag that tell us that there is an invalid field on the form
+export const validate = async (data, schema) => {
+    const isValid = true; // a general flag that tell us that there is an invalid field on the form
 
     //console.log(userModel.formFields);
 
+    const errors = []; // {field:"firstName", message:"Câmp obligatoriu"}
+
+    const objectSchema = schema.properties;
+
     // userModel.formFields.forEach((x) => {
-    for (const x of userModel.formFields) {
-        const currentValue = input[x.id];
+    for (const propertyName of objectSchema) {
+        const currentValue = data[propertyName];
 
-        // All fields
-        if (x.required && isEmpty(currentValue)) x.errorMsg = isRequiredMessage();
-        else if (isLongerThanDefault(currentValue)) x.errorMsg = isLongerThanDefaultMessage();
-        // Specific fields
-        else if (x.type == "singleLine") {
-            if (x.max && isLongerThan(currentValue, x.max)) x.errorMsg = isLongerThanMessage(x.max);
-            else if (x.min && isShorterThan(currentValue, x.min)) x.errorMsg = isShorterThanMessage(x.min);
-            else if (x.mirrorField && isDifferentFromMirror(currentValue, input[x.mirrorField]))
-                x.errorMsg = isDifferentFromMirrorMessage(x.mirrorField);
-        } else if (x.type == "multiLine") {
-            if (x.max && isLongerThan(currentValue, x.max)) x.errorMsg = isLongerThanMessage(x.max);
-            else if (x.min && isShorterThan(currentValue, x.min)) x.errorMsg = isShorterThanMessage(x.min);
-        } else if (x.type == "email") {
-            if (isNotAnEmail(currentValue)) x.errorMsg = isNotAnEmailMMessage();
-            else if (x.isUnique && (await isNotUnique(currentValue))) x.errorMsg = isNotUniqueMMessage();
+        // All properties
+        const propertySchema = objectSchema[propertyName];
+
+        if (propertySchema.required && isEmpty(currentValue)) {
+            errors.push({ field: propertyName, message: isRequiredMessage() });
+            continue;
         }
 
-        if (x.errorMsg) {
-            x.hasError = true;
-            isValid = false;
-        }
+        // if (x.required && isEmpty(currentValue)) x.errorMsg = isRequiredMessage();
+        // else if (isLongerThanDefault(currentValue)) x.errorMsg = isLongerThanDefaultMessage();
+        // // Specific fields
+        // else if (x.type == "singleLine") {
+        //     if (x.max && isLongerThan(currentValue, x.max)) x.errorMsg = isLongerThanMessage(x.max);
+        //     else if (x.min && isShorterThan(currentValue, x.min)) x.errorMsg = isShorterThanMessage(x.min);
+        //     else if (x.mirrorField && isDifferentFromMirror(currentValue, data[x.mirrorField]))
+        //         x.errorMsg = isDifferentFromMirrorMessage(x.mirrorField);
+        // } else if (x.type == "multiLine") {
+        //     if (x.max && isLongerThan(currentValue, x.max)) x.errorMsg = isLongerThanMessage(x.max);
+        //     else if (x.min && isShorterThan(currentValue, x.min)) x.errorMsg = isShorterThanMessage(x.min);
+        // } else if (x.type == "email") {
+        //     if (isNotAnEmail(currentValue)) x.errorMsg = isNotAnEmailMMessage();
+        //     else if (x.isUnique && (await isNotUnique(currentValue))) x.errorMsg = isNotUniqueMMessage();
+        // }
+
+        // if (x.errorMsg) {
+        //     x.hasError = true;
+        //     isValid = false;
+        // }
     }
+
     return {
         isValid,
         // formFields: userModel.formFields,

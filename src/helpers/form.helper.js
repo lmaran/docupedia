@@ -18,3 +18,26 @@ export const setDefaultValues = (inputValues, formFields) => {
         x.value = inputValues[x.id]; // preserve user-entered values
     });
 };
+
+// const demo = {
+//     formFields: [
+//         {
+//             id: "lastName",
+//             label: "Nume",
+//             type: "string",
+//             displayAs: "singleLine",
+//             helpMsg: "Minim 6 caractere",
+//             required: true,
+//             hasFocus: true,
+//             value: "[oldValue]"
+//         },
+//     ],
+// };
+
+export const setViewData = (data, errors) => {
+    // if (!inputValues || !formFields) return;
+
+    formFields.forEach((x) => {
+        x.value = inputValues[x.id]; // preserve user-entered values
+    });
+};

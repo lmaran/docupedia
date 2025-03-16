@@ -1,0 +1,50 @@
+{
+    "_id": "user-123",
+    "name": "user",
+    "title": "Utilizator",
+    "fields": {
+        "firstName": {
+            "title": "Prenume",
+            "type": "string",
+            "rules": [{ "rule": "required" }, { "rule": "minLength", "params": [5], "message": "Username must be at least {0} characters long!" }]
+        },
+        "lastName": {
+            "title": "Nume",
+            "type": "string",
+            "rules": [{ "rule": "required" }, { "rule": "minLength", "params": [5], "message": "Username must be at least {0} characters long!" }]
+        },
+        "email": { "title": "Email", "type": "string", "rules": [{ "rule": "required" }, { "rule": "email" }] },
+        "password": {
+            "title": "Parola",
+            "type": "string",
+            "description": "Minim 6 caractere",
+            "rules": [{ "rule": "minLength", "params": [8], "message": "Your password should have at least {0} characters." }]
+        },
+        "confirmPassword": {
+            "title": "Confirmă parola",
+            "type": "string",
+            "rules": [{ "rule": "required" }, { "rule": "identical", "params": ["$.password"], "message": "Nu coincide cu parola" }]
+        },
+        "age": {
+            "title": "Vârsta",
+            "type": "integer",
+            "rules": [
+                { "rule": "min", "params": [18] },
+                { "rule": "max", "params": [100] }
+            ]
+        },
+        "birthDate": { "title": "Data nașterii", "type": "date", "description": "Data în format dd-mm-yyyy" },
+        "promoCode": {
+            "rules": [{ "rule": "startsWith", "params": ["PROMO"] }]
+        }
+    },
+    "forms": [
+        {
+            "id": "create",
+            "fields": [{ "id": "firstName" }, { "id": "lastName" }, { "id": "email" }, { "id": "password" }, { "id": "confirmPassword" }]
+        }
+    ],
+    "views": [{ "_id": "create-form", "fields": "" }],
+    "businessRules": [],
+    "validators": []
+}

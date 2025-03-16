@@ -1,18 +1,14 @@
 import validator from "validator";
 import { v4 as uuidv4 } from "uuid";
 import { userService } from "../services/user.service.js";
+import * as entityService from "../services/entity.service.js";
 import * as entityModelService from "../services/entity-model.service.js";
 import * as authService from "../services/auth.service.js";
+
 // import * as emailService from "../services/email.service.js";
 
-// const config = require("../config");
-import config from "../config/config.js";
-//const arrayHelper = require("../helpers/array.helper");
-// import * as arrayHelper from "../helpers/array.helper.js";
-//const cookieHelper = require("../helpers/cookie.helper");
 import * as cookieHelper from "../helpers/cookie.helper.js";
 import * as validationHelper from "../helpers/validation.helper.js";
-import * as requestHelper from "../helpers/request.helper.js";
 import * as formHelper from "../helpers/form.helper.js";
 
 // const recaptchaService = require("../services/recaptcha.service");
@@ -82,10 +78,10 @@ export const getSignup = async (req, res) => {
 
     const newFormFields = formHelper.setFocus(formFields);
 
-    const data = { formFields: newFormFields };
+    const formData = { formFields: newFormFields };
 
-    //res.send(data);
-    res.render("user/signup", { data });
+    // res.send(formData);
+    res.render("user/signup", formData);
 };
 
 // const getUserFromRequest = (userModel, req) => {
@@ -94,32 +90,27 @@ export const getSignup = async (req, res) => {
 //     return newUser;
 // };
 
+// registerRule("startsWith", (value, char) => (value.startsWith(char) ? null : `Must start with "${char}".`));
+
 export const postSignup = async (req, res) => {
     try {
-        // const formFields = getModel("user", "createForm"); // a list of fields, in the order they appear on the form
-        const formFields = [{ id: "firstName" }, { id: "lastName" }, { id: "email" }, { id: "password" }, { id: "confirmPassword" }];
-        // In req.body the fields are sorted alphabetically. Also there are prototype properties and also technical fields (e.g. recaptcha). So to extract data from request we need a list of fields on the form
-        const data = requestHelper.getDataFromRequestBody(req.body, formFields);
-        console.log(data);
+        const entityMeta = await entityService.getMetadata("user");
 
-        // const schema = getSchema("user"); // details about each field
-        // const validationResult = await validationHelper.validate(data, schema);
-        const validationResult = { isValid: true };
+        const data = entityService.getDataFromRequest(req.body, entityMeta, "create");
 
-        // const userModel = entityModelService.getByName("user");
-
-        //const transformResult = await transformHelper.transform(inputValues, userModel); // nu mai trebuie
-        //const validationResult = await validationHelper.validate(transformResult.result, userModel);
+        const validationResult = await entityService.validate(data, entityMeta, "create");
+        // console.log(validationResult);
 
         if (!validationResult.isValid) {
-            // const newFormFields = userModel.formFields.map((x) => ({ ...x })); // immutable
-            const viewData = formHelper.setViewData(data, validationResult.error); // set default values
-            // formHelper.setFocus(newFormFields);
+            const formData = entityService.getFormData(data, entityMeta, "create", validationResult.errors);
 
-            // const data = { formFields: newFormFields };
-            return res.render("user/signup", { viewData });
+            // console.log(formData);
+
+            // return res.send(formData);
+            return res.render("user/signup", formData);
         }
 
+        // await entityService.Create(data, entityMeta);
         // await authService.signupByUserRegistration(firstName, lastName, email, password);
         res.redirect("/signup/ask-to-confirm");
     } catch (err) {
