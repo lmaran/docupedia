@@ -2,17 +2,15 @@ import validator from "validator";
 import { v4 as uuidv4 } from "uuid";
 import { userService } from "../services/user.service.js";
 import * as entityService from "../services/entity.service.js";
-import * as entityModelService from "../services/entity-model.service.js";
 import * as authService from "../services/auth.service.js";
 
 // import * as emailService from "../services/email.service.js";
 
 import * as cookieHelper from "../helpers/cookie.helper.js";
-import * as validationHelper from "../helpers/validation.helper.js";
-import * as formHelper from "../helpers/form.helper.js";
 
 // const recaptchaService = require("../services/recaptcha.service");
 // import * as recaptchaService from "../services/recaptcha.service.js";
+const entityId = "user";
 
 export const postInviteToSignup = async (req, res) => {
     try {
@@ -70,48 +68,34 @@ export const postInviteToSignup = async (req, res) => {
 };
 
 export const getSignup = async (req, res) => {
-    const userModel = entityModelService.getByName("user");
-    const formFields = userModel.formFields;
+    const formId = "create";
 
-    // const newFormFields = formFields.map((x) => ({ ...x })); // immutable
-    // console.log(newFormFields);
+    const entityMeta = await entityService.getEntityMeta(entityId);
 
-    const newFormFields = formHelper.setFocus(formFields);
-
-    const formData = { formFields: newFormFields };
+    const formData = entityService.getFormData(entityMeta, formId);
 
     // res.send(formData);
     res.render("user/signup", formData);
 };
 
-// const getUserFromRequest = (userModel, req) => {
-//     const newUser = {};
-//     userModel.formFields.forEach((x) => (newUser[x.id] = req.body[x.id]?.trim()));
-//     return newUser;
-// };
-
-// registerRule("startsWith", (value, char) => (value.startsWith(char) ? null : `Must start with "${char}".`));
-
 export const postSignup = async (req, res) => {
     try {
-        const entityMeta = await entityService.getMetadata("user");
+        const formId = "create";
 
-        const data = entityService.getDataFromRequest(req.body, entityMeta, "create");
+        const entityMeta = await entityService.getEntityMeta(entityId);
 
-        const validationResult = await entityService.validate(data, entityMeta, "create");
-        // console.log(validationResult);
+        const entityData = entityService.getEntityData(req.body, entityMeta, formId);
+
+        const validationResult = await entityService.validate(entityData, entityMeta, formId);
 
         if (!validationResult.isValid) {
-            const formData = entityService.getFormData(data, entityMeta, "create", validationResult.errors);
+            const formData = entityService.getFormData(entityMeta, formId, entityData, validationResult.errors);
 
-            // console.log(formData);
-
-            // return res.send(formData);
+            //return res.send(formData);
             return res.render("user/signup", formData);
         }
 
-        // await entityService.Create(data, entityMeta);
-        // await authService.signupByUserRegistration(firstName, lastName, email, password);
+        // await entityService.Create(entityData);
         res.redirect("/signup/ask-to-confirm");
     } catch (err) {
         // @TODO display an error message (without details) and log the details

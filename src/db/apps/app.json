@@ -7,13 +7,19 @@
     "dataSources": [],
     "validationRules": [
         {
-            "name": "startsWith",
+            "ruleId": "startsWith",
             "params": "value, char",
             "body": "    return value.startsWith(char) ? null : `Must start with \"${char}\".`;"
+        },
+        {
+            "ruleId": "required2",
+            "params": "value",
+            "body": "    return value ? null : `Obligatoriu`;"
         }
     ],
-    "validationMessages": {
-        "minLength": "Oops! Too short, must be at least {0} characters.",
-        "startsWith": "Promo codes should always start with PROMO."
-    }
+
+    "validationMessages": [
+        { "ruleId": "minLength", "message": "Oops! Too short, must be at least {0} characters." },
+        { "ruleId": "startsWith", "message": "Promo codes should always start with PROMO." }
+    ]
 }

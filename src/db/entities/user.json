@@ -3,15 +3,15 @@
     "name": "user",
     "title": "Utilizator",
     "fields": {
-        "firstName": {
-            "title": "Prenume",
-            "type": "string",
-            "rules": [{ "rule": "required" }, { "rule": "minLength", "params": [5], "message": "Username must be at least {0} characters long!" }]
-        },
         "lastName": {
             "title": "Nume",
             "type": "string",
-            "rules": [{ "rule": "required" }, { "rule": "minLength", "params": [5], "message": "Username must be at least {0} characters long!" }]
+            "rules": [{ "rule": "required" }, { "rule": "minLength", "params": [5] }]
+        },
+        "firstName": {
+            "title": "Prenume",
+            "type": "string",
+            "rules": [{ "rule": "required" }, { "rule": "minLength", "params": [5] }]
         },
         "email": { "title": "Email", "type": "string", "rules": [{ "rule": "required" }, { "rule": "email" }] },
         "password": {
@@ -41,7 +41,7 @@
     "forms": [
         {
             "id": "create",
-            "fields": [{ "id": "firstName" }, { "id": "lastName" }, { "id": "email" }, { "id": "password" }, { "id": "confirmPassword" }]
+            "fields": [{ "id": "lastName" }, { "id": "firstName" }, { "id": "email" }, { "id": "password" }, { "id": "confirmPassword" }]
         }
     ],
     "views": [{ "_id": "create-form", "fields": "" }],

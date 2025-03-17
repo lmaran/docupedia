@@ -2,11 +2,12 @@ import * as fileHelper from "../helpers/file.helper.js";
 import * as appService from "./app.service.js";
 import * as validationHelper from "../helpers/validator.helper.js";
 
-export const getMetadata = async (entityName) => {
+export const getEntityMeta = async (entityName) => {
+    // https://learn.microsoft.com/en-us/dynamics365/customer-insights/journeys/marketing-fields#field-type-and-format-options
     return await fileHelper.getJson(`../db/entities/${entityName}.json`);
 };
 
-export const getSchema = (entityMeta, formFields) => {
+export const getEntitySchema = (entityMeta, formFields) => {
     if (!entityMeta?.fields) return null;
 
     const schema = {};
@@ -15,139 +16,83 @@ export const getSchema = (entityMeta, formFields) => {
         const fieldId = field.id;
         schema[fieldId] = { rules: entityMeta.fields[fieldId]?.rules };
     });
-
-    // for (const fieldId in entityMeta.fields) {
-    //     schema[fieldId] = { rules: entityMeta.fields[fieldId]?.rules };
-    // }
-
-    // Object.keys(entityMeta.fields).forEach((fieldId) => {
-    //     schema[fieldId] = { roles: entityMeta.fields[fieldId]?.rules };
-    // });
-
     return schema;
 };
 
 export const getFormFields = (entityMeta, formId) => {
-    // A list of fields, in the order they appear on the form
-    const form = (entityMeta.forms || []).find((x) => x.id == formId);
-    return form.fields;
+    // An array of fields, in the order they appear on the form
+    return (entityMeta.forms || []).find((form) => form.id == formId)?.fields;
 };
 
-export const getDataFromRequest = (reqBody, entityMeta, formId) => {
+export const getEntityData = (reqBody, entityMeta, formId) => {
     // In req.body the fields are sorted alphabetically. Also there are prototype properties and also technical fields (e.g. recaptcha). So to extract data from request we need a list of fields on the form
     if (!reqBody) return null;
 
-    // const formFields = [{ id: "firstName" }, { id: "lastName" }, { id: "email" }, { id: "password" }, { id: "confirmPassword" }];
+    // formFields = [{ id: "firstName" }, ...];
     const formFields = getFormFields(entityMeta, formId);
 
-    const result = {};
-    formFields.forEach((f) => (result[f.id] = reqBody[f.id]?.trim()));
+    const entityData = {};
+    formFields.forEach((f) => (entityData[f.id] = reqBody[f.id]?.trim()));
 
-    // const result = {
-    //     firstName: "Luc",
-    //     lastName: "Maran",
-    //     email: "lucian.maran-gmail.com",
-    //     password: "pas1",
-    //     confirmPassword: "",
-    //     // promoCode: "DISCOUNT2024",
+    // const entityData = {
+    //     firstName: "Lucian",
+    //     ...
     // };
-    return result;
+    return entityData;
 };
 
-export const validate = async (data, entityMeta, formId) => {
+export const validate = async (entityData, entityMeta, formId) => {
+    // const data = {
+    //     firstName: "Lucian",
+    //     ...
+    // };
     const formFields = getFormFields(entityMeta, formId);
-    const appMeta = await appService.getMetadata();
-    // console.log(appMeta);
+    const appMeta = await appService.getAppMeta();
 
-    // Register a new rule with a default message
-    //registerRule("startsWith", (value, char) => (value.startsWith(char) ? null : `Must start with "${char}".`));
+    // Register custom rules
+    validationHelper.removeAllCustomRules();
     if (appMeta?.validationRules) {
         appMeta.validationRules.forEach((ruleStr) => {
-            // console.log(ruleStr);
+            const ruleName = ruleStr.name;
 
             const params = ruleStr.params?.split(",");
-            // console.log(params);
-
-            // const array = JSON.parse(xxx);
-            // console.log(array);
-
-            // const params = JSON.parse(ruleStr.params?.split(",") || []);
-            // console.log(params);
-
             const body = ruleStr.body;
-            // console.log(body);
 
-            const rule = new Function(...params, body);
-            // console.log(rule.toString());
+            const ruleFunction = new Function(...params, body);
 
-            validationHelper.registerRule(ruleStr.name, rule);
+            validationHelper.registerCustomRule(ruleName, ruleFunction);
         });
     }
 
-    // // test
-    // const rules = validationHelper.getRules();
-    // console.log(rules.size);
+    // Register custom messages
+    validationHelper.removeAllCustomMessages();
+    if (appMeta?.validationMessages) {
+        appMeta.validationMessages.forEach((x) => {
+            validationHelper.registerCustomMessage(x.ruleId, x.message);
+        });
+    }
 
-    // console.log(rules.get("maxLength").toString());
-    // console.log(rules.get("startsWith").toString());
-
-    // if (appMeta?.validationMessages) {
-    //     // // Custom messages per rule (global override)
-    //     // const customMessages = {
-    //     //     minLength: "Oops! Too short, must be at least {0} characters.",
-    //     //     startsWith: "Promo codes should always start with PROMO.",
-    //     // };
-    //     validationHelper.registerMessages(appMeta.validationMessages);
-    // }
-
-    // const schema2 = {
+    const entitySchema = getEntitySchema(entityMeta, formFields);
+    // entitySchema = {
     //     firstName: {
     //         rules: [{ rule: "required" }, { rule: "minLength", params: [5], message: "Username must be at least {0} characters long!" }],
+    //     ...
     //     },
-    //     lastName: {
-    //         rules: [{ rule: "required" }, { rule: "minLength", params: [5], message: "Username must be at least {0} characters long!" }],
-    //     },
-    //     email: {
-    //         rules: [{ rule: "required" }, { rule: "email" }],
-    //     },
-    //     password: {
-    //         rules: [{ rule: "minLength", params: [8], message: "Your password should have at least {0} characters." }],
-    //     },
-    //     confirmPassword: {
-    //         rules: [{ rule: "required" }, { rule: "email" }],
-    //     },
-    //     // promoCode: {
-    //     //     rules: [{ rule: "startsWith", params: ["PROMO"] }],
-    //     // },
     // };
-    const schema = getSchema(entityMeta, formFields);
-    // console.log(schema);
 
-    const validationResult = await validationHelper.validate(data, schema);
-    // console.log(validationResult);
-
-    // validationResult:
-    // {
+    const validationResult = await validationHelper.validate(entityData, entitySchema);
+    // const validationResult = {
     //     isValid: false,
     //     errors: {
     //       firstName: 'Username must be at least 5 characters long!',
-    //       email: 'Invalid email format.',
-    //       password: 'Your password should have at least 8 characters.',
-    //       confirmPassword: 'This field is required.',
-    //       promoCode: 'Promo codes should always start with PROMO.'
+    //       ...
     //     }
     // }
-
-    // const validationResult = {
-    //     isValid: true,
-    // };
-
-    console.log(validationResult);
 
     return validationResult;
 };
 
-export const getFormData = (data, entityMeta, formId, errors) => {
+export const getFormData = (entityMeta, formId, entityData, errors) => {
     const formFields = getFormFields(entityMeta, formId);
 
     const formData = { formFields: [] };
@@ -157,20 +102,29 @@ export const getFormData = (data, entityMeta, formId, errors) => {
 
         const fieldSchema = entityMeta.fields[fieldId];
 
-        console.log(fieldSchema);
+        const newField = { id: fieldId, title: fieldSchema?.title, description: fieldSchema?.description };
 
-        const newField = { id: fieldId, label: fieldSchema?.title, helpMsg: fieldSchema?.description, required: true, value: data[fieldId] };
+        const isRequired = fieldSchema?.rules?.find((x) => x.rule == "required");
+        if (isRequired) newField.required = true;
 
-        // const errorMessage = errors[fieldId]?.message;
-        if (errors[fieldId]) {
+        // In case of validation errors, send data back to the end user
+        if (entityData && entityData[fieldId]) {
+            newField.value = entityData[fieldId];
+        }
+
+        if (errors && errors[fieldId]) {
             newField.hasError = true;
-            newField.message = errors[fieldId]?.message;
+            newField.message = errors[fieldId];
         }
 
         formData.formFields.push(newField);
-
-        // schema[fieldId] = { rules: entityMeta.fields[fieldId]?.rules };
     });
+
+    // Set focus
+    const firstInvalidField = formData.formFields.find((x) => x.hasError);
+
+    if (firstInvalidField) firstInvalidField.hasFocus = true;
+    else formData.formFields[0].hasFocus = true;
 
     // formFields= [
     //     {

@@ -1,35 +1,44 @@
-import { defaultRules } from "./validator.default-rules.js";
+import { rules } from "./validator.default-rules.js";
 
-const rules = new Map();
+const defaultRules = new Map();
+
+const customRules = new Map();
+const customMessages = new Map();
 
 // Register default rules
-defaultRules.forEach((key, value) => registerRule(value, key));
+rules.forEach((key, value) => registerDefaultRule(value, key));
 
-/**
- * Registers a new validation rule with an optional default error message.
- * @param {string} name - The name of the validation rule.
- * @param {Function} validatorFn - The validation function.
- * @param {string} [defaultMessage] - The default error message template.
- */
-export function registerRule(name, validatorFn) {
-    if (rules.has(name)) {
-        throw new Error(`Rule "${name}" is already registered.`);
+// Maybe you want to call this method from outside (when the application starts)
+export function registerDefaultRule(ruleId, validatorFn) {
+    if (defaultRules.has(ruleId)) {
+        throw new Error(`Rule "${ruleId}" is already registered.`);
     }
-    rules.set(name, validatorFn);
+    defaultRules.set(ruleId, validatorFn);
 }
 
-export function getRules() {
-    return rules;
+export function registerCustomRule(ruleId, validatorFn) {
+    customRules.set(ruleId, validatorFn);
+}
+
+export function registerCustomMessage(ruleId, message) {
+    customMessages.set(ruleId, message);
+}
+
+export function removeAllCustomRules() {
+    customRules.clear();
+}
+
+export function removeAllCustomMessages() {
+    customMessages.clear();
 }
 
 /**
  * Validates a value based on a schema.
  * @param {Object} schema - The validation schema.
  * @param {Object} data - The data to validate.
- * @param {Object} [customMessages={}] - Optional global custom error messages per rule.
  * @returns {Object} - Validation result with { isValid: boolean, errors: Object }.
  */
-export function validate(data, schema, customMessages = {}) {
+export function validate(data, schema) {
     const errors = {};
     let isValid = true;
 
@@ -39,7 +48,7 @@ export function validate(data, schema, customMessages = {}) {
 
         for (const ruleObj of fieldRules) {
             const { rule, params = [] } = ruleObj;
-            const validatorFn = rules.get(rule);
+            const validatorFn = customRules.get(rule) || defaultRules.get(rule); // check first for custom rules
 
             if (!validatorFn) {
                 throw new Error(`Validation rule "${rule}" is not registered.`);
@@ -50,9 +59,9 @@ export function validate(data, schema, customMessages = {}) {
                 isValid = false;
 
                 const messageTemplate =
-                    ruleObj.message || // field-level message (highest priority)
-                    customMessages[rule] || // global custom message
-                    error; // rule-level (default message)
+                    ruleObj.message || // entity-level
+                    customMessages.get(rule) || // app-level
+                    error; // library-level (default message)
 
                 const finalMessage =
                     typeof messageTemplate === "function"
@@ -60,7 +69,7 @@ export function validate(data, schema, customMessages = {}) {
                         : messageTemplate.replace(/\{(\d+)\}/g, (_, index) => params[index] || "");
 
                 errors[field] = finalMessage;
-                break; // ignore the remaining rules for thee same field
+                break; // ignore the remaining rules for the same field
             }
         }
     }

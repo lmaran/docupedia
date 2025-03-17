@@ -1,12 +1,3 @@
-// const defaultRules = new Map();
-
-// defaultRules.set("required", (value) => (value ? null : "This field is required."));
-// defaultRules.set("email", (value) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? null : "Invalid email format."));
-// defaultRules.set("minLength", (value, length) => (value.length >= length ? null : `Must be at least ${length} characters long.`));
-// defaultRules.set("maxLength", (value, length) => (value.length <= length ? null : `Must be at most ${length} characters long.`));
-
-// export { defaultRules };
-
 // Each validation function should return "null" if the value is valid, or an "error message", otherwise.
 
 export const required = (value) => (value ? null : "This field is required.");
@@ -23,4 +14,4 @@ rules.set("minLength", minLength);
 rules.set("maxLength", maxLength);
 rules.set("identical", identical);
 
-export { rules as defaultRules };
+export { rules };
