@@ -1,20 +1,7 @@
-import { rules } from "./validator.default-rules.js";
-
-const defaultRules = new Map();
+import { rules, messages } from "./validator.rules.js";
 
 const customRules = new Map();
 const customMessages = new Map();
-
-// Register default rules
-rules.forEach((key, value) => registerDefaultRule(value, key));
-
-// Maybe you want to call this method from outside (when the application starts)
-export function registerDefaultRule(ruleId, validatorFn) {
-    if (defaultRules.has(ruleId)) {
-        throw new Error(`Rule "${ruleId}" is already registered.`);
-    }
-    defaultRules.set(ruleId, validatorFn);
-}
 
 export function registerCustomRule(ruleId, validatorFn) {
     customRules.set(ruleId, validatorFn);
@@ -48,7 +35,7 @@ export function validate(data, schema) {
 
         for (const ruleObj of fieldRules) {
             const { ruleId, params = [] } = ruleObj;
-            const validatorFn = customRules.get(ruleId) || defaultRules.get(ruleId); // check first for custom rules
+            const validatorFn = customRules.get(ruleId) || rules.get(ruleId); // check first for custom rules
 
             if (!validatorFn) {
                 throw new Error(`Validation rule "${ruleId}" is not registered.`);
@@ -62,6 +49,7 @@ export function validate(data, schema) {
                 const messageTemplate =
                     ruleObj.message || // entity-level
                     customMessages.get(ruleId) || // app-level
+                    messages.get(ruleId) || // app-level
                     error; // library-level (default message)
 
                 const finalMessage =
