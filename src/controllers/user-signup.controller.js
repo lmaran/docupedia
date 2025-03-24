@@ -1,4 +1,3 @@
-import validator from "validator";
 import { v4 as uuidv4 } from "uuid";
 import { userService } from "../services/user.service.js";
 import * as entityService from "../services/entity.service.js";
@@ -148,68 +147,68 @@ const getSignupStaticValidationErrors = (firstName, lastName, email, password, c
     try {
         const validationErrors = [];
 
-        // lastName
-        if (validator.isEmpty(lastName))
-            validationErrors.push({
-                field: "lastName",
-                msg: "Câmp obligatoriu",
-            });
-        else if (!validator.isLength(lastName, { max: 50 }))
-            validationErrors.push({
-                field: "lastName",
-                msg: "Maxim 50 caractere",
-            });
+        // // lastName
+        // if (validator.isEmpty(lastName))
+        //     validationErrors.push({
+        //         field: "lastName",
+        //         msg: "Câmp obligatoriu",
+        //     });
+        // else if (!validator.isLength(lastName, { max: 50 }))
+        //     validationErrors.push({
+        //         field: "lastName",
+        //         msg: "Maxim 50 caractere",
+        //     });
 
-        // firstName
-        if (validator.isEmpty(firstName))
-            validationErrors.push({
-                field: "firstName",
-                msg: "Câmp obligatoriu",
-            });
-        else if (!validator.isLength(firstName, { max: 50 }))
-            validationErrors.push({
-                field: "firstName",
-                msg: "Maxim 50 caractere",
-            });
+        // // firstName
+        // if (validator.isEmpty(firstName))
+        //     validationErrors.push({
+        //         field: "firstName",
+        //         msg: "Câmp obligatoriu",
+        //     });
+        // else if (!validator.isLength(firstName, { max: 50 }))
+        //     validationErrors.push({
+        //         field: "firstName",
+        //         msg: "Maxim 50 caractere",
+        //     });
 
-        if (validator.isEmpty(email)) validationErrors.push({ field: "email", msg: "Câmp obligatoriu" });
-        else if (!validator.isLength(email, { max: 50 }))
-            validationErrors.push({
-                field: "email",
-                msg: "Maxim 50 caractere",
-            });
-        else if (!validator.isEmail(email)) validationErrors.push({ field: "email", msg: "Email invalid" });
-        // else if (await userService.getOneByEmail(email))
-        //     validationErrors.push({ field: "email", msg: "Exista deja un cont cu acest email" });
+        // if (validator.isEmpty(email)) validationErrors.push({ field: "email", msg: "Câmp obligatoriu" });
+        // else if (!validator.isLength(email, { max: 50 }))
+        //     validationErrors.push({
+        //         field: "email",
+        //         msg: "Maxim 50 caractere",
+        //     });
+        // else if (!validator.isEmail(email)) validationErrors.push({ field: "email", msg: "Email invalid" });
+        // // else if (await userService.getOneByEmail(email))
+        // //     validationErrors.push({ field: "email", msg: "Exista deja un cont cu acest email" });
 
-        // password
-        if (validator.isEmpty(password))
-            validationErrors.push({
-                field: "password",
-                msg: "Câmp obligatoriu",
-            });
-        else if (!validator.isLength(password, { min: 6 }))
-            validationErrors.push({
-                field: "password",
-                msg: "Minim 6 caractere",
-            });
-        else if (!validator.isLength(password, { max: 50 }))
-            validationErrors.push({
-                field: "password",
-                msg: "Maxim 50 caractere",
-            });
+        // // password
+        // if (validator.isEmpty(password))
+        //     validationErrors.push({
+        //         field: "password",
+        //         msg: "Câmp obligatoriu",
+        //     });
+        // else if (!validator.isLength(password, { min: 6 }))
+        //     validationErrors.push({
+        //         field: "password",
+        //         msg: "Minim 6 caractere",
+        //     });
+        // else if (!validator.isLength(password, { max: 50 }))
+        //     validationErrors.push({
+        //         field: "password",
+        //         msg: "Maxim 50 caractere",
+        //     });
 
-        // confirm password
-        if (validator.isEmpty(confirmPassword))
-            validationErrors.push({
-                field: "confirmPassword",
-                msg: "Câmp obligatoriu",
-            });
-        else if (confirmPassword !== password)
-            validationErrors.push({
-                field: "confirmPassword",
-                msg: "Parolele nu coincid",
-            });
+        // // confirm password
+        // if (validator.isEmpty(confirmPassword))
+        //     validationErrors.push({
+        //         field: "confirmPassword",
+        //         msg: "Câmp obligatoriu",
+        //     });
+        // else if (confirmPassword !== password)
+        //     validationErrors.push({
+        //         field: "confirmPassword",
+        //         msg: "Parolele nu coincid",
+        //     });
 
         return validationErrors;
     } catch (err) {

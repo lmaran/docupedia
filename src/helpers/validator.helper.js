@@ -43,24 +43,25 @@ export function validate(data, schema) {
     let isValid = true;
 
     for (const field in schema) {
-        const fieldRules = schema[field].rules || [];
+        const fieldRules = schema[field].validationRules || [];
         const value = data[field];
 
         for (const ruleObj of fieldRules) {
-            const { rule, params = [] } = ruleObj;
-            const validatorFn = customRules.get(rule) || defaultRules.get(rule); // check first for custom rules
+            const { ruleId, params = [] } = ruleObj;
+            const validatorFn = customRules.get(ruleId) || defaultRules.get(ruleId); // check first for custom rules
 
             if (!validatorFn) {
-                throw new Error(`Validation rule "${rule}" is not registered.`);
+                throw new Error(`Validation rule "${ruleId}" is not registered.`);
             }
 
-            const error = validatorFn(value, ...params);
+            // We need also "data" and "schema" to reference additional fields în validation functions (e.g. "Nu coincide cu Parola")
+            const error = validatorFn(value, ...params, data, schema);
             if (error) {
                 isValid = false;
 
                 const messageTemplate =
                     ruleObj.message || // entity-level
-                    customMessages.get(rule) || // app-level
+                    customMessages.get(ruleId) || // app-level
                     error; // library-level (default message)
 
                 const finalMessage =

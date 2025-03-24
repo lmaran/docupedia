@@ -6,36 +6,36 @@
         "lastName": {
             "title": "Nume",
             "type": "string",
-            "rules": [{ "rule": "required" }, { "rule": "minLength", "params": [5] }]
+            "validationRules": [{ "ruleId": "required" }, { "ruleId": "minLength", "params": [5] }]
         },
         "firstName": {
             "title": "Prenume",
             "type": "string",
-            "rules": [{ "rule": "required" }, { "rule": "minLength", "params": [5] }]
+            "validationRules": [{ "ruleId": "required" }, { "ruleId": "minLength", "params": [5] }]
         },
-        "email": { "title": "Email", "type": "string", "rules": [{ "rule": "required" }, { "rule": "email" }] },
+        "email": { "title": "Email", "type": "string", "validationRules": [{ "ruleId": "required" }, { "ruleId": "email" }] },
         "password": {
             "title": "Parola",
             "type": "string",
             "description": "Minim 6 caractere",
-            "rules": [{ "rule": "minLength", "params": [8], "message": "Your password should have at least {0} characters." }]
+            "validationRules": [{ "ruleId": "minLength", "params": [6], "message": "Parola trebuie să aibă minim {0} caractere" }]
         },
         "confirmPassword": {
             "title": "Confirmă parola",
             "type": "string",
-            "rules": [{ "rule": "required" }, { "rule": "identical", "params": ["$.password"], "message": "Nu coincide cu parola" }]
+            "validationRules": [{ "ruleId": "required" }, { "ruleId": "sameAs", "params": ["password"] }]
         },
         "age": {
             "title": "Vârsta",
             "type": "integer",
-            "rules": [
-                { "rule": "min", "params": [18] },
-                { "rule": "max", "params": [100] }
+            "validationRules": [
+                { "ruleId": "min", "params": [18] },
+                { "ruleId": "max", "params": [100] }
             ]
         },
         "birthDate": { "title": "Data nașterii", "type": "date", "description": "Data în format dd-mm-yyyy" },
         "promoCode": {
-            "rules": [{ "rule": "startsWith", "params": ["PROMO"] }]
+            "validationRules": [{ "ruleId": "startsWith", "params": ["PROMO"] }]
         }
     },
     "forms": [
@@ -44,7 +44,7 @@
             "fields": [{ "id": "lastName" }, { "id": "firstName" }, { "id": "email" }, { "id": "password" }, { "id": "confirmPassword" }]
         }
     ],
-    "views": [{ "_id": "create-form", "fields": "" }],
+    "views": [{ "id": "create-form", "fields": "" }],
     "businessRules": [],
     "validators": []
 }

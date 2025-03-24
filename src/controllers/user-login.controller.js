@@ -5,7 +5,6 @@
 // const config = require("../config");
 // const recaptchaService = require("../services/recaptcha.service");
 
-import validator from "validator";
 import * as authService from "../services/auth.service.js";
 import * as arrayHelper from "../helpers/array.helper.js";
 import * as cookieHelper from "../helpers/cookie.helper.js";
@@ -104,13 +103,13 @@ export const postLogin = async (req, res) => {
 const getLoginStaticValidationErrors = (email, password) => {
     const validationErrors = [];
 
-    // email
-    if (validator.isEmpty(email)) validationErrors.push({ field: "email", msg: "Câmp obligatoriu" });
-    else if (!validator.isLength(email, { max: 50 })) validationErrors.push({ field: "email", msg: "Maxim 50 caractere" });
+    // // email
+    // if (validator.isEmpty(email)) validationErrors.push({ field: "email", msg: "Câmp obligatoriu" });
+    // else if (!validator.isLength(email, { max: 50 })) validationErrors.push({ field: "email", msg: "Maxim 50 caractere" });
 
-    // password
-    if (validator.isEmpty(password)) validationErrors.push({ field: "password", msg: "Câmp obligatoriu" });
-    else if (!validator.isLength(password, { max: 50 })) validationErrors.push({ field: "password", msg: "Maxim 50 caractere" });
+    // // password
+    // if (validator.isEmpty(password)) validationErrors.push({ field: "password", msg: "Câmp obligatoriu" });
+    // else if (!validator.isLength(password, { max: 50 })) validationErrors.push({ field: "password", msg: "Maxim 50 caractere" });
 
     return validationErrors;
 };

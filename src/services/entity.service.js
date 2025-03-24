@@ -14,7 +14,8 @@ export const getEntitySchema = (entityMeta, formFields) => {
 
     formFields.forEach((field) => {
         const fieldId = field.id;
-        schema[fieldId] = { rules: entityMeta.fields[fieldId]?.rules };
+        // We need "title" to mention some fields în validation messages (e.g. "Nu coincide cu Parola")
+        schema[fieldId] = { validationRules: entityMeta.fields[fieldId]?.validationRules, title: entityMeta.fields[fieldId]?.title };
     });
     return schema;
 };
@@ -75,7 +76,7 @@ export const validate = async (entityData, entityMeta, formId) => {
     const entitySchema = getEntitySchema(entityMeta, formFields);
     // entitySchema = {
     //     firstName: {
-    //         rules: [{ rule: "required" }, { rule: "minLength", params: [5], message: "Username must be at least {0} characters long!" }],
+    //         validationRules: [{ rule: "required" }, { rule: "minLength", params: [5], message: "Username must be at least {0} characters long!" }],
     //     ...
     //     },
     // };
@@ -104,7 +105,7 @@ export const getFormData = (entityMeta, formId, entityData, errors) => {
 
         const newField = { id: fieldId, title: fieldSchema?.title, description: fieldSchema?.description };
 
-        const isRequired = fieldSchema?.rules?.find((x) => x.rule == "required");
+        const isRequired = fieldSchema?.validationRules?.find((x) => x.ruleId == "required");
         if (isRequired) newField.required = true;
 
         // In case of validation errors, send data back to the end user

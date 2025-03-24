@@ -4,7 +4,6 @@
 // const arrayHelper = require("../helpers/array.helper");
 // const cookieHelper = require("../helpers/cookie.helper");
 
-import validator from "validator";
 import * as authService from "../services/auth.service.js";
 import * as arrayHelper from "../helpers/array.helper.js";
 import * as cookieHelper from "../helpers/cookie.helper.js";
@@ -73,34 +72,34 @@ export const postChangePassword = async (req, res) => {
 const getChangePasswordStaticValidationErrors = (oldPassword, newPassword) => {
     const validationErrors = [];
 
-    // oldPassword
-    if (validator.isEmpty(oldPassword))
-        validationErrors.push({
-            field: "oldPassword",
-            msg: "Câmp obligatoriu",
-        });
-    else if (!validator.isLength(oldPassword, { max: 50 }))
-        validationErrors.push({
-            field: "oldPassword",
-            msg: "Maxim 50 caractere",
-        });
+    // // oldPassword
+    // if (validator.isEmpty(oldPassword))
+    //     validationErrors.push({
+    //         field: "oldPassword",
+    //         msg: "Câmp obligatoriu",
+    //     });
+    // else if (!validator.isLength(oldPassword, { max: 50 }))
+    //     validationErrors.push({
+    //         field: "oldPassword",
+    //         msg: "Maxim 50 caractere",
+    //     });
 
-    // newPassword
-    if (validator.isEmpty(newPassword))
-        validationErrors.push({
-            field: "newPassword",
-            msg: "Câmp obligatoriu",
-        });
-    else if (!validator.isLength(newPassword, { min: 6 }))
-        validationErrors.push({
-            field: "newPassword",
-            msg: "Minim 6 caractere",
-        });
-    else if (!validator.isLength(newPassword, { max: 50 }))
-        validationErrors.push({
-            field: "newPassword",
-            msg: "Câmp obligatoriu",
-        });
+    // // newPassword
+    // if (validator.isEmpty(newPassword))
+    //     validationErrors.push({
+    //         field: "newPassword",
+    //         msg: "Câmp obligatoriu",
+    //     });
+    // else if (!validator.isLength(newPassword, { min: 6 }))
+    //     validationErrors.push({
+    //         field: "newPassword",
+    //         msg: "Minim 6 caractere",
+    //     });
+    // else if (!validator.isLength(newPassword, { max: 50 }))
+    //     validationErrors.push({
+    //         field: "newPassword",
+    //         msg: "Câmp obligatoriu",
+    //     });
 
     return validationErrors;
 };

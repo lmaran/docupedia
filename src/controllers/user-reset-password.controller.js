@@ -6,7 +6,6 @@
 // const cookieHelper = require("../helpers/cookie.helper");
 // const recaptchaService = require("../services/recaptcha.service");
 
-import validator from "validator";
 import * as authService from "../services/auth.service.js";
 import * as arrayHelper from "../helpers/array.helper.js";
 import * as cookieHelper from "../helpers/cookie.helper.js";
@@ -147,42 +146,42 @@ const getResetPasswordStaticValidationErrors = (email, password, confirmPassword
     try {
         const validationErrors = [];
 
-        if (validator.isEmpty(email)) validationErrors.push({ field: "email", msg: "Câmp obligatoriu" });
-        else if (!validator.isLength(email, { max: 50 }))
-            validationErrors.push({
-                field: "email",
-                msg: "Maxim 50 caractere",
-            });
-        else if (!validator.isEmail(email)) validationErrors.push({ field: "email", msg: "Email invalid" });
+        // if (validator.isEmpty(email)) validationErrors.push({ field: "email", msg: "Câmp obligatoriu" });
+        // else if (!validator.isLength(email, { max: 50 }))
+        //     validationErrors.push({
+        //         field: "email",
+        //         msg: "Maxim 50 caractere",
+        //     });
+        // else if (!validator.isEmail(email)) validationErrors.push({ field: "email", msg: "Email invalid" });
 
-        // password
-        if (validator.isEmpty(password))
-            validationErrors.push({
-                field: "password",
-                msg: "Câmp obligatoriu",
-            });
-        else if (!validator.isLength(password, { min: 6 }))
-            validationErrors.push({
-                field: "password",
-                msg: "Minim 6 caractere",
-            });
-        else if (!validator.isLength(password, { max: 50 }))
-            validationErrors.push({
-                field: "password",
-                msg: "Maxim 50 caractere",
-            });
+        // // password
+        // if (validator.isEmpty(password))
+        //     validationErrors.push({
+        //         field: "password",
+        //         msg: "Câmp obligatoriu",
+        //     });
+        // else if (!validator.isLength(password, { min: 6 }))
+        //     validationErrors.push({
+        //         field: "password",
+        //         msg: "Minim 6 caractere",
+        //     });
+        // else if (!validator.isLength(password, { max: 50 }))
+        //     validationErrors.push({
+        //         field: "password",
+        //         msg: "Maxim 50 caractere",
+        //     });
 
-        // confirm password
-        if (validator.isEmpty(confirmPassword))
-            validationErrors.push({
-                field: "confirmPassword",
-                msg: "Câmp obligatoriu",
-            });
-        else if (confirmPassword !== password)
-            validationErrors.push({
-                field: "confirmPassword",
-                msg: "Parolele nu coincid",
-            });
+        // // confirm password
+        // if (validator.isEmpty(confirmPassword))
+        //     validationErrors.push({
+        //         field: "confirmPassword",
+        //         msg: "Câmp obligatoriu",
+        //     });
+        // else if (confirmPassword !== password)
+        //     validationErrors.push({
+        //         field: "confirmPassword",
+        //         msg: "Parolele nu coincid",
+        //     });
 
         return validationErrors;
     } catch (err) {
