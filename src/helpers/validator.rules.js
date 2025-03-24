@@ -1,5 +1,5 @@
 // We call each function with 4 parameters: "value", "...params", "dataObj" and "schemaObj".
-// Each validation function should return "null" if the value is valid, or an "error message", otherwise.
+// Each validation function should return "true" if the value is valid, or "false", otherwise.
 
 export const required = (value) => value;
 export const email = (value) => {
@@ -7,6 +7,9 @@ export const email = (value) => {
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return pattern.test(value);
 };
+
+// Definition: { "ruleId": "minLength", "params": [6], "message": "Parola trebuie să aibă minim {0} caractere" }
+// Call: validatorFn(value, ...params, data, schema);
 export const minLength = (value, length) => value.length >= length;
 export const maxLength = (value, length) => value.length <= length;
 export const sameAs = (value, sourceField, dataObj) => value == dataObj[sourceField];

@@ -41,16 +41,15 @@ export function validate(data, schema) {
                 throw new Error(`Validation rule "${ruleId}" is not registered.`);
             }
 
-            // We need also "data" and "schema" to reference additional fields în validation functions (e.g. "Nu coincide cu Parola")
-            const error = validatorFn(value, ...params, data, schema);
-            if (error) {
+            // We also need "data" and "schema" to reference additional fields în validation functions (e.g. "Nu coincide cu Parola")
+            if (!validatorFn(value, ...params, data, schema)) {
                 isValid = false;
 
                 const messageTemplate =
                     ruleObj.message || // entity-level
                     customMessages.get(ruleId) || // app-level
-                    messages.get(ruleId) || // app-level
-                    error; // library-level (default message)
+                    messages.get(ruleId) || // library-level (default message)
+                    "Câmp invalid";
 
                 const finalMessage =
                     typeof messageTemplate === "function"

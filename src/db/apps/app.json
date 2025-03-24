@@ -9,17 +9,17 @@
         {
             "ruleId": "startsWith",
             "params": "value, char",
-            "body": "    return value.startsWith(char) ? null : `Must start with \"${char}\".`;"
+            "body": "    return value.startsWith(char);"
         },
         {
             "ruleId": "required2",
             "params": "value",
-            "body": "    return value ? null : `Obligatoriu`;"
+            "body": "    return value;"
         }
     ],
 
     "validationMessages": [
         { "ruleId": "minLength", "message": "Oops! Too short, must be at least {0} characters." },
-        { "ruleId": "startsWith", "message": "Promo codes should always start with PROMO." }
+        { "ruleId": "startsWith", "message": "Must start with {1}" }
     ]
 }

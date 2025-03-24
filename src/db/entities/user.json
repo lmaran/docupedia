@@ -23,7 +23,7 @@
         "confirmPassword": {
             "title": "Confirmă parola",
             "type": "string",
-            "validationRules": [{ "ruleId": "required" }, { "ruleId": "sameAs", "params": ["password"] }]
+            "validationRules": [{ "ruleId": "required" }, { "ruleId": "sameAs", "params": ["password"], "message": "Parolele nu coincid" }]
         },
         "age": {
             "title": "Vârsta",
