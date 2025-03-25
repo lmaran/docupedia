@@ -1,6 +1,6 @@
 import * as fileHelper from "../helpers/file.helper.js";
 import * as appService from "./app.service.js";
-import * as validationHelper from "../helpers/validator.helper.js";
+import * as validator from "../validation/validator.js";
 
 export const getEntityMeta = async (entityName) => {
     // https://learn.microsoft.com/en-us/dynamics365/customer-insights/journeys/marketing-fields#field-type-and-format-options
@@ -51,7 +51,7 @@ export const validate = async (entityData, entityMeta, formId) => {
     const appMeta = await appService.getAppMeta();
 
     // Register custom rules
-    validationHelper.removeAllCustomRules();
+    validator.removeAllCustomRules();
     if (appMeta?.validationRules) {
         appMeta.validationRules.forEach((ruleStr) => {
             const ruleName = ruleStr.name;
@@ -61,15 +61,15 @@ export const validate = async (entityData, entityMeta, formId) => {
 
             const ruleFunction = new Function(...params, body);
 
-            validationHelper.registerCustomRule(ruleName, ruleFunction);
+            validator.registerCustomRule(ruleName, ruleFunction);
         });
     }
 
     // Register custom messages
-    validationHelper.removeAllCustomMessages();
+    validator.removeAllCustomMessages();
     if (appMeta?.validationMessages) {
         appMeta.validationMessages.forEach((x) => {
-            validationHelper.registerCustomMessage(x.ruleId, x.message);
+            validator.registerCustomMessage(x.ruleId, x.message);
         });
     }
 
@@ -81,7 +81,7 @@ export const validate = async (entityData, entityMeta, formId) => {
     //     },
     // };
 
-    const validationResult = await validationHelper.validate(entityData, entitySchema);
+    const validationResult = await validator.validate(entityData, entitySchema);
     // const validationResult = {
     //     isValid: false,
     //     errors: {
