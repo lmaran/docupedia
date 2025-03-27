@@ -3,7 +3,7 @@
     "name": "Docupedia",
     "description": "Documentații și note",
     "customerId": "",
-    "entities": ["user"],
+    "entities": ["user-123"],
     "dataSources": [],
     "validationRules": [
         {

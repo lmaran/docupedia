@@ -10,6 +10,8 @@ const config = {
     mongo_uri: "mongodb://localhost",
     mongo_dbName: "docupedia-dev",
     mailgun_key: process.env.MAILGUN_KEY,
+    recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY,
+    recaptchaApiKey: process.env.RECAPTCHA_API_KEY,
 };
 
 export default config;

@@ -1,6 +1,6 @@
 import * as fileHelper from "../helpers/file.helper.js";
 import * as appService from "./app.service.js";
-import * as validator from "../validation/validator.js";
+import * as validator from "../helpers/validator.helper.js";
 
 export const getEntityMeta = async (entityName) => {
     // https://learn.microsoft.com/en-us/dynamics365/customer-insights/journeys/marketing-fields#field-type-and-format-options

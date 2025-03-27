@@ -1,4 +1,4 @@
-import { rules, messages } from "./rules.js";
+import { rules, messages } from "./validation-rules.js";
 
 const customRules = new Map();
 const customMessages = new Map();
