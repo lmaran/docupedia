@@ -1,3 +1,5 @@
+// See also https://github.com/Azure-Samples/ms-identity-ciam-javascript-tutorial/blob/main/1-Authentication/5-sign-in-express/App/server.js
+// https://stackoverflow.com/questions/17696801/express-js-app-listen-vs-server-listen
 import browserSync from "browser-sync";
 import app from "./app.js";
 import config from "./config/config.js";
