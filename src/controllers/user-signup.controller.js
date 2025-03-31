@@ -9,7 +9,6 @@ import * as cookieHelper from "../helpers/cookie.helper.js";
 
 // const recaptchaService = require("../services/recaptcha.service");
 // import * as recaptchaService from "../services/recaptcha.service.js";
-const entityId = "user";
 
 export const postInviteToSignup = async (req, res) => {
     try {
@@ -79,6 +78,7 @@ export const getSignup = async (req, res) => {
 
 export const postSignup = async (req, res) => {
     try {
+        const entityId = "user";
         const formId = "create";
 
         const entityMeta = await entityService.getEntityMeta(entityId);
