@@ -66,6 +66,7 @@ export const postInviteToSignup = async (req, res) => {
 };
 
 export const getSignup = async (req, res) => {
+    const entityId = "user";
     const formId = "create";
 
     const entityMeta = await entityService.getEntityMeta(entityId);

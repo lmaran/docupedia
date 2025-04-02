@@ -4,7 +4,7 @@ import * as validator from "../helpers/validator.helper.js";
 
 export const getEntityMeta = async (entityName) => {
     // https://learn.microsoft.com/en-us/dynamics365/customer-insights/journeys/marketing-fields#field-type-and-format-options
-    return await fileHelper.getJson(`../db/entities/${entityName}.json`);
+    return await fileHelper.getJson(`../metadata/tables/${entityName}.json`);
 };
 
 export const getEntitySchema = (entityMeta, formFields) => {
