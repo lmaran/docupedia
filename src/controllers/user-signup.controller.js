@@ -79,6 +79,15 @@ export const getSignup = async (req, res) => {
 
 export const postSignup = async (req, res) => {
     try {
+        // const userData = userService.getUserSignupData(req.body);
+        // const validationResult = await userService.validate(userData);
+        // if (!validationResult.isValid) {
+        //     const viewData = userService.getViewData(userData, validationResult.errors);
+
+        //     return res.render("user/signup", viewData);
+        // }
+
+        // =========== old, but functional ===========
         const entityId = "user";
         const formId = "create";
 
@@ -142,93 +151,4 @@ export const getSignupConfirmSuccess = async (req, res) => {
         userIsNotAuthenticated: !req.user,
     };
     res.render("user/signup-confirm-success", data);
-};
-
-const getSignupStaticValidationErrors = (firstName, lastName, email, password, confirmPassword) => {
-    try {
-        const validationErrors = [];
-
-        // // lastName
-        // if (validator.isEmpty(lastName))
-        //     validationErrors.push({
-        //         field: "lastName",
-        //         msg: "Câmp obligatoriu",
-        //     });
-        // else if (!validator.isLength(lastName, { max: 50 }))
-        //     validationErrors.push({
-        //         field: "lastName",
-        //         msg: "Maxim 50 caractere",
-        //     });
-
-        // // firstName
-        // if (validator.isEmpty(firstName))
-        //     validationErrors.push({
-        //         field: "firstName",
-        //         msg: "Câmp obligatoriu",
-        //     });
-        // else if (!validator.isLength(firstName, { max: 50 }))
-        //     validationErrors.push({
-        //         field: "firstName",
-        //         msg: "Maxim 50 caractere",
-        //     });
-
-        // if (validator.isEmpty(email)) validationErrors.push({ field: "email", msg: "Câmp obligatoriu" });
-        // else if (!validator.isLength(email, { max: 50 }))
-        //     validationErrors.push({
-        //         field: "email",
-        //         msg: "Maxim 50 caractere",
-        //     });
-        // else if (!validator.isEmail(email)) validationErrors.push({ field: "email", msg: "Email invalid" });
-        // // else if (await userService.getOneByEmail(email))
-        // //     validationErrors.push({ field: "email", msg: "Exista deja un cont cu acest email" });
-
-        // // password
-        // if (validator.isEmpty(password))
-        //     validationErrors.push({
-        //         field: "password",
-        //         msg: "Câmp obligatoriu",
-        //     });
-        // else if (!validator.isLength(password, { min: 6 }))
-        //     validationErrors.push({
-        //         field: "password",
-        //         msg: "Minim 6 caractere",
-        //     });
-        // else if (!validator.isLength(password, { max: 50 }))
-        //     validationErrors.push({
-        //         field: "password",
-        //         msg: "Maxim 50 caractere",
-        //     });
-
-        // // confirm password
-        // if (validator.isEmpty(confirmPassword))
-        //     validationErrors.push({
-        //         field: "confirmPassword",
-        //         msg: "Câmp obligatoriu",
-        //     });
-        // else if (confirmPassword !== password)
-        //     validationErrors.push({
-        //         field: "confirmPassword",
-        //         msg: "Parolele nu coincid",
-        //     });
-
-        return validationErrors;
-    } catch (err) {
-        throw new Error(err);
-    }
-};
-
-const flashAndReloadSignupPage = (req, res, validationErrors) => {
-    // const { lastName, firstName, email, password, confirmPassword } = req.body;
-    // const initialValues = [
-    //     { field: "lastName", val: lastName },
-    //     { field: "firstName", val: firstName },
-    //     { field: "email", val: email },
-    //     { field: "password", val: password },
-    //     { field: "confirmPassword", val: confirmPassword },
-    // ];
-    // keep old values at page reload by setting a flash message (a key, followed by a value)
-    // req.flash("validationErrors", validationErrors);
-    // req.flash("initialValues", initialValues);
-    const currentUrl = req.get("referer"); // "/signup?invitationCode=..."
-    return res.redirect(currentUrl);
 };
