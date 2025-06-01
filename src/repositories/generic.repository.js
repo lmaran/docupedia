@@ -1,12 +1,12 @@
 import { getDb, ObjectId } from "../helpers/mongo.helper.js";
 
-export const createGenericService = (collectionName) => {
+export const createGenericRepository = (collectionName) => {
     return {
         insertOne: async (item) => {
             try {
                 const db = await getDb();
                 const result = await db.collection(collectionName).insertOne(item);
-                return result.insertedId;
+                return result.insertedId.toString();
             } catch (error) {
                 throw new Error(`Error creating users: ${error.message}`);
             }
@@ -14,7 +14,11 @@ export const createGenericService = (collectionName) => {
         getAll: async () => {
             try {
                 const db = await getDb();
-                return await db.collection(collectionName).find().project({ password: 0 }).toArray(); // if there are no items, return an empty array
+                const items = await db.collection(collectionName).find().project({ password: 0 }).toArray(); // if there are no items, return an empty array
+                items.forEach((x) => {
+                    x._id = x._id.toString();
+                });
+                return items;
             } catch (error) {
                 throw new Error(`Error retrieving users: ${error.message}`);
             }
@@ -23,7 +27,9 @@ export const createGenericService = (collectionName) => {
         getOneById: async (id) => {
             try {
                 const db = await getDb();
-                return await db.collection(collectionName).findOne({ _id: ObjectId.createFromHexString(id) }); // if not found, return null
+                const item = await db.collection(collectionName).findOne({ _id: ObjectId.createFromHexString(id) }); // if not found, return null
+                item._id = item._id.toString();
+                return item;
             } catch (error) {
                 throw new Error(`Error retrieving user: ${error.message}`);
             }

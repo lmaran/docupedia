@@ -1,0 +1,9 @@
+<a href="/lectii/adauga" class="btn btn-primary btn-sm">Adaugă lecție</a>
+
+<ul class="mt-2">
+    {{#each lessons}}
+        <li>
+            <a href="/lectii/{{_id}}">{{_id}} {{name}} {{description}} </a>
+        </li>
+    {{/each}}
+</ul>

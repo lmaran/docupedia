@@ -8,7 +8,7 @@
 
     <h1>Crează cont nou</h1>
 
-    <form method="post" id="signupForm" action="/signup" novalidate onsubmit="saveBtn.disabled = true; return true;">
+    <form method="post" id="signupForm" novalidate onsubmit="saveBtn.disabled = true; return true;">
 
         {{#each formFields}}
         <div class="row mb-3">
@@ -41,7 +41,7 @@
 
     <div class="row mb-3">
         <div class="col-md-7 offset-md-3">
-            Ti-ai uitat parola? <a href="/reset-password">Reseteaza parola.</a>
+            Ti-ai uitat parola? <a href="/auth/reset-password">Reseteaza parola.</a>
         </div>
     </div>
 

@@ -1,0 +1,47 @@
+<div class="container-fluid">
+
+    {{!-- <p>{{toJSON data}}</p> --}}
+    {{!-- <p>{{toJSON errors}}</p> --}}
+
+
+
+    <h1>Crează lecție</h1>
+
+    <form method="post" novalidate onsubmit="saveBtn.disabled = true; return true;">
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="nameInput" class="fw-bold">Titlul lecției:</label>
+                <input type="text" name="name" class="form-control" id="nameInput" placeholder="" autofocus
+                    value="{{lesson.name}}">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="descriptionInput" class="fw-bold">Descriere:</label>
+                <textarea type="text" name="description" class="form-control" id="descriptionInput"
+                    placeholder="">{{lesson.description}}</textarea>
+                <small><p class="text-muted mb-0">Doar tu (proprietarul) poți vedea această descriere</p></small>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-7 offset-md-3">
+                <button type="submit" name="saveBtn" class="btn btn-primary"><i class="bi bi-save"></i>
+                    Salveaza</button>
+                <button type="button" class="btn btn-light" onclick='window.history.back();'>
+                    <i class="bi bi-x"></i>
+                    Renunta</button>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="row mb-3">
+        <div class="col-md-7 offset-md-3">
+            <a href="/lectii">Lecții</a>
+        </div>
+    </div>
+
+</div>
+

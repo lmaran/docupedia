@@ -1,0 +1,12 @@
+- models (presentation layer)
+- view (presentation layer)
+- controllers (presentation layer)
+- mappers (presentation layer) // req.body -> Domain Entity
+- viewDataProviders (presentation layer) // Output transformation for views or API (e.g. Domain Result -> View Data)
+- validators (presentation layer)
+- services (business layer)
+- repositories (data layer)
+- infrastructure (external communication layer)
+    - logging.js
+    - captcha.js
+    - db.js
