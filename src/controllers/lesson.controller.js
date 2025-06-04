@@ -1,22 +1,4 @@
-import { lessonService } from "../services/lesson.service.js";
-
-export const createGet = async (req, res) => {
-    const data = {};
-    res.render("lesson/lesson-create-or-edit", data);
-};
-
-export const createPost = async (req, res) => {
-    const { name, description } = req.body;
-
-    const lesson = {
-        name,
-        description,
-    };
-
-    await lessonService.insertOne(lesson);
-
-    res.redirect(`/lectii`);
-};
+import * as lessonService from "../services/lesson.service.js";
 
 export const getAll = async (req, res) => {
     const lessons = await lessonService.getAll();
@@ -28,6 +10,7 @@ export const getAll = async (req, res) => {
 
 export const getOneById = async (req, res) => {
     const lessonId = req.params.lessonId;
+
     const lesson = await lessonService.getOneById(lessonId);
     const data = { lesson };
 
@@ -37,8 +20,14 @@ export const getOneById = async (req, res) => {
 
 export const createOrEditGet = async (req, res) => {
     const lessonId = req.params.lessonId;
-    const lesson = await lessonService.getOneById(lessonId);
-    const data = { lesson };
+    const isEditMode = !!lessonId;
+
+    const data = { isEditMode };
+
+    if (isEditMode) {
+        const lesson = await lessonService.getOneById(lessonId);
+        data.lesson = lesson;
+    }
 
     //res.send(data);
     res.render("lesson/lesson-create-or-edit", data);
@@ -46,14 +35,35 @@ export const createOrEditGet = async (req, res) => {
 
 export const createOrEditPost = async (req, res) => {
     const { name, description } = req.body;
-    const _id = req.params.lessonId;
+    const lessonId = req.params.lessonId;
+
+    const isEditMode = !!lessonId;
 
     const lesson = {
         name,
         description,
     };
 
-    await lessonService.updateOne(_id, lesson);
+    let result;
+    if (isEditMode) {
+        lesson.id = lessonId;
+        result = await lessonService.updateOne(lesson);
+    } else {
+        result = await lessonService.insertOne(lesson);
+    }
+
+    console.log(result);
+
+    // if (!result.isValid) {
+    //     // console.log(result);
+    //     // console.log(lesson);
+    //     // const data = { lesson };
+    //     const formData = lessonService.getFormData(lesson, result.errors);
+    //     console.log(formData);
+
+    //     const data = { lesson: { name: formData.formFields[0].value, description: formData.formFields[1].value } };
+    //     return res.render("lesson/lesson-create-or-edit", data);
+    // }
 
     res.redirect(`/lectii`);
 };

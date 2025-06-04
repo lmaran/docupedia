@@ -35,10 +35,10 @@ export const createGenericRepository = (collectionName) => {
             }
         },
 
-        updateOne: async (id, updatedFields) => {
+        updateOne: async (item) => {
             try {
                 const db = await getDb();
-                const result = await db.collection(collectionName).updateOne({ _id: ObjectId.createFromHexString(id) }, { $set: updatedFields });
+                const result = await db.collection(collectionName).updateOne({ _id: ObjectId.createFromHexString(item.id) }, { $set: item });
                 return result.matchedCount;
             } catch (error) {
                 throw new Error(`Error updating user: ${error.message}`);

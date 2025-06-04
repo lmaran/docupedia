@@ -25,6 +25,21 @@
             </div>
         </div>
 
+
+        {{#each formFields}}
+        <div class="row mb-3">
+            <label for="{{id}}" class="col-md-3 col-form-label {{#if required}}required{{/if}}">{{title}}</label>
+            <div class="col-md-7">
+                <input type="text" name="{{id}}" id="{{id}}"
+                    class="form-control {{#if hasError}}is-invalid {{/if}}" value="{{value}}" 
+                    {{#if hasFocus}}autofocus {{/if}} />
+                <div class="text-muted mb-0">{{description}}</div>
+                <div class="invalid-feedback">{{message}}</div>
+            </div>
+        </div>
+        {{/each}}
+
+
         <div class="row mb-3">
             <div class="col-md-7 offset-md-3">
                 <button type="submit" name="saveBtn" class="btn btn-primary"><i class="bi bi-save"></i>

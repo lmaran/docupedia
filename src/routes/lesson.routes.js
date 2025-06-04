@@ -6,11 +6,8 @@ const router = Router();
 
 router.get("/", lessonController.getAll);
 
-router.get("/:lessonId/modifica", lessonController.createOrEditGet);
-router.post("/:lessonId/modifica", lessonController.createOrEditPost);
-
-router.get("/adauga", lessonController.createGet);
-router.post("/adauga", lessonController.createPost);
+router.get(["/adauga", "/:lessonId/modifica"], lessonController.createOrEditGet);
+router.post(["/adauga", "/:lessonId/modifica"], lessonController.createOrEditPost);
 
 router.get("/:lessonId", lessonController.getOneById);
 router.post("/:lessonId/sterge", lessonController.deleteOneById);
