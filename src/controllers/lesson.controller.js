@@ -1,8 +1,8 @@
 import * as lessonService from "../services/lesson.service.js";
+import * as lessonViewDataProvider from "../viewDataProviders/lesson.view-data-provider.js";
 
 export const getAll = async (req, res) => {
-    const lessons = await lessonService.getAll();
-    const data = { lessons };
+    const data = await lessonViewDataProvider.getListVD();
 
     //res.send(data);
     res.render("lesson/lesson-list", data);
@@ -11,23 +11,16 @@ export const getAll = async (req, res) => {
 export const getOneById = async (req, res) => {
     const lessonId = req.params.lessonId;
 
-    const lesson = await lessonService.getOneById(lessonId);
-    const data = { lesson };
+    const data = await lessonViewDataProvider.getReadVD(lessonId);
 
     //res.send(data);
-    res.render("lesson/lesson", data);
+    res.render("lesson/lesson-read", data);
 };
 
 export const createOrEditGet = async (req, res) => {
     const lessonId = req.params.lessonId;
-    const isEditMode = !!lessonId;
 
-    const data = { isEditMode };
-
-    if (isEditMode) {
-        const lesson = await lessonService.getOneById(lessonId);
-        data.lesson = lesson;
-    }
+    const data = await lessonViewDataProvider.getCreateOrEditVD(lessonId);
 
     //res.send(data);
     res.render("lesson/lesson-create-or-edit", data);

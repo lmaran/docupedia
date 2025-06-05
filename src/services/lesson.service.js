@@ -2,6 +2,14 @@
 import { lessonRepository } from "../repositories/lesson.repository.js";
 import * as lessonValidation from "../validation/lesson.validation.js";
 
+export const getAll = async () => {
+    return await lessonRepository.getAll();
+};
+
+export const getOneById = async (lessonId) => {
+    return await lessonRepository.getOneById(lessonId);
+};
+
 export const insertOne = async (item) => {
     //     const validationResult = await lessonValidation.validate(item);
     //     if (!validationResult.isValid) return validationResult;
@@ -9,14 +17,6 @@ export const insertOne = async (item) => {
     const insertedId = await lessonRepository.insertOne(item);
     // return { isValid: true, result: insertedId };
     return insertedId;
-};
-
-export const getAll = async () => {
-    return await lessonRepository.getAll();
-};
-
-export const getOneById = async (lessonId) => {
-    return await lessonRepository.getOneById(lessonId);
 };
 
 export const updateOne = async (item) => {
