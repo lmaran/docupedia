@@ -1,4 +1,5 @@
 import * as validator from "../helpers/validator.helper.js";
+import * as schema from "../schema/lesson.schema.js";
 
 export const validate = async (lessonData) => {
     // const data = {
@@ -8,26 +9,20 @@ export const validate = async (lessonData) => {
     // const formFields = getFormFields(entityMeta, formId);
     // const appMeta = await appService.getAppMeta();
 
-    const lessonSchema = {
-        name: {
-            title: "Nume",
-            type: "string",
-            validationRules: [{ ruleId: "required" }, { ruleId: "minLength", params: [5] }],
-        },
-        description: {
-            title: "Prenume",
-            type: "string",
-            validationRules: [{ ruleId: "required" }, { ruleId: "minLength", params: [5] }],
-        },
-    };
-
-    // const lessonSchema = getEntitySchema(entityMeta, formFields);
-    // entitySchema = {
-    //     firstName: {
-    //         validationRules: [{ rule: "required" }, { rule: "minLength", params: [5], message: "Username must be at least {0} characters long!" }],
-    //     ...
+    // const lessonSchema = {
+    //     name: {
+    //         title: "Nume",
+    //         type: "string",
+    //         validationRules: [{ ruleId: "required" }, { ruleId: "minLength", params: [5] }],
+    //     },
+    //     description: {
+    //         title: "Prenume",
+    //         type: "string",
+    //         validationRules: [{ ruleId: "required" }, { ruleId: "minLength", params: [5] }],
     //     },
     // };
+
+    const lessonSchema = schema.entitySchema;
 
     const validationResult = await validator.validate(lessonData, lessonSchema);
     // const validationResult = {

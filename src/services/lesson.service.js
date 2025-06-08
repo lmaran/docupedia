@@ -15,17 +15,15 @@ export const insertOne = async (item) => {
     //     if (!validationResult.isValid) return validationResult;
 
     const insertedId = await lessonRepository.insertOne(item);
-    // return { isValid: true, result: insertedId };
-    return insertedId;
+    return { isValid: true, result: insertedId };
 };
 
 export const updateOne = async (item) => {
-    // const validationResult = await lessonValidation.validate(item);
-    // if (!validationResult.isValid) return validationResult;
+    const validationResult = await lessonValidation.validate(item);
+    if (!validationResult.isValid) return validationResult;
 
     const matchedCount = await lessonRepository.updateOne(item);
-    // return { isValid: true, result: matchedCount };
-    return matchedCount;
+    return { isValid: true, result: matchedCount };
 };
 
 export const deleteOneById = async (id) => {

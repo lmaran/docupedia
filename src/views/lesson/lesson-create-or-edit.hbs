@@ -4,11 +4,10 @@
     {{!-- <p>{{toJSON errors}}</p> --}}
 
 
-
-    <h1>Crează lecție</h1>
+    <h1>{{#if isEditMode}}{{lesson.name}}{{else}}Lecție nouă{{/if}}</h1>
 
     <form method="post" novalidate onsubmit="saveBtn.disabled = true; return true;">
-        <div class="row mb-3">
+        {{!-- <div class="row mb-3">
             <div class="col-md-12">
                 <label for="nameInput" class="fw-bold">Titlul lecției:</label>
                 <input type="text" name="name" class="form-control" id="nameInput" placeholder="" autofocus
@@ -23,12 +22,12 @@
                     placeholder="">{{lesson.description}}</textarea>
                 <small><p class="text-muted mb-0">Doar tu (proprietarul) poți vedea această descriere</p></small>
             </div>
-        </div>
+        </div> --}}
 
 
-        {{#each formFields}}
+        {{#with formFields.name}}
         <div class="row mb-3">
-            <label for="{{id}}" class="col-md-3 col-form-label {{#if required}}required{{/if}}">{{title}}</label>
+            <label for="{{id}}" class="col-md-3 col-form-label fw-bold {{#if required}}required{{/if}}">{{label}}:</label>
             <div class="col-md-7">
                 <input type="text" name="{{id}}" id="{{id}}"
                     class="form-control {{#if hasError}}is-invalid {{/if}}" value="{{value}}" 
@@ -37,7 +36,34 @@
                 <div class="invalid-feedback">{{message}}</div>
             </div>
         </div>
-        {{/each}}
+        {{/with}}
+
+        {{#with formFields.description}}
+        <div class="row mb-3">
+            <label for="{{id}}" class="col-md-3 col-form-label fw-bold {{#if required}}required{{/if}}">{{label}}:</label>
+            <div class="col-md-7">
+                <input type="text" name="{{id}}" id="{{id}}"
+                    class="form-control {{#if hasError}}is-invalid {{/if}}" value="{{value}}" 
+                    {{#if hasFocus}}autofocus {{/if}} />
+                <div class="text-muted mb-0">{{description}}</div>
+                <div class="invalid-feedback">{{message}}</div>
+            </div>
+        </div>
+        {{/with}}
+
+
+        {{!-- {{#each formFields}}
+        <div class="row mb-3">
+            <label for="{{id}}" class="col-md-3 col-form-label {{#if required}}required{{/if}}">{{label}}</label>
+            <div class="col-md-7">
+                <input type="text" name="{{id}}" id="{{id}}"
+                    class="form-control {{#if hasError}}is-invalid {{/if}}" value="{{value}}" 
+                    {{#if hasFocus}}autofocus {{/if}} />
+                <div class="text-muted mb-0">{{description}}</div>
+                <div class="invalid-feedback">{{message}}</div>
+            </div>
+        </div>
+        {{/each}} --}}
 
 
         <div class="row mb-3">

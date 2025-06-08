@@ -20,21 +20,19 @@ export const getOneById = async (req, res) => {
 export const createOrEditGet = async (req, res) => {
     const lessonId = req.params.lessonId;
 
-    const data = await lessonViewDataProvider.getCreateOrEditVD(lessonId);
+    const formData = await lessonViewDataProvider.getFormData(lessonId);
 
     //res.send(data);
-    res.render("lesson/lesson-create-or-edit", data);
+    res.render("lesson/lesson-create-or-edit", formData);
 };
 
 export const createOrEditPost = async (req, res) => {
-    const { name, description } = req.body;
     const lessonId = req.params.lessonId;
-
     const isEditMode = !!lessonId;
 
     const lesson = {
-        name,
-        description,
+        name: req.body.name,
+        description: req.body.description,
     };
 
     let result;
@@ -44,19 +42,10 @@ export const createOrEditPost = async (req, res) => {
     } else {
         result = await lessonService.insertOne(lesson);
     }
-
-    console.log(result);
-
-    // if (!result.isValid) {
-    //     // console.log(result);
-    //     // console.log(lesson);
-    //     // const data = { lesson };
-    //     const formData = lessonService.getFormData(lesson, result.errors);
-    //     console.log(formData);
-
-    //     const data = { lesson: { name: formData.formFields[0].value, description: formData.formFields[1].value } };
-    //     return res.render("lesson/lesson-create-or-edit", data);
-    // }
+    if (!result.isValid) {
+        const formData = await lessonViewDataProvider.getFormData(lessonId, result.errors, lesson);
+        return res.render("lesson/lesson-create-or-edit", formData);
+    }
 
     res.redirect(`/lectii`);
 };
