@@ -1,6 +1,7 @@
 // import { v4 as uuidv4 } from "uuid";
 // import { userService } from "../services/user.service.js";
-import * as authService from "../services/auth.service.js";
+// import * as authService from "../services/auth.service.js";
+import * as authViewDataProvider from "../viewDataProviders/auth.view-data-provider.js";
 
 // import * as emailService from "../services/email.service.js";
 
@@ -64,23 +65,32 @@ import * as authService from "../services/auth.service.js";
 //     }
 // };
 
-export const getSignup = async (req, res) => {
-    const viewData = await authService.getSignupViewData();
-    res.render("auth/signup", viewData);
+export const createOrEditGet = async (req, res) => {
+    const lessonId = req.params.lessonId;
+
+    const formData = await authViewDataProvider.getFormData(lessonId);
+
+    //res.send(data);
+    res.render("auth/signup", formData);
 };
 
-export const postSignup = async (req, res) => {
-    const user = await authService.getUserSignupData(req.body);
+// export const getSignup = async (req, res) => {
+//     const viewData = await authService.getSignupViewData();
+//     res.render("auth/signup", viewData);
+// };
 
-    const validationResult = await authService.validate(user);
-    if (!validationResult.isValid) {
-        const createUserFormData = await authService.getSignupViewData(user, validationResult.errors);
-        return res.render("auth/signup", createUserFormData);
-    }
+// export const postSignup = async (req, res) => {
+//     const user = await authService.getUserSignupData(req.body);
 
-    // await entityService.Create(entityData);
-    res.redirect("/signup/ask-to-confirm");
-};
+//     const validationResult = await authService.validate(user);
+//     if (!validationResult.isValid) {
+//         const createUserFormData = await authService.getSignupViewData(user, validationResult.errors);
+//         return res.render("auth/signup", createUserFormData);
+//     }
+
+//     // await entityService.Create(entityData);
+//     res.redirect("/signup/ask-to-confirm");
+// };
 
 // export const getSignupConfirm = async (req, res) => {
 //     try {

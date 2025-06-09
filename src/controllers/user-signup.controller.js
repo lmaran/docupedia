@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { userService } from "../services/user.service.js";
-import * as entityService from "../services/entity.service.js";
+// import * as entityService from "../services/entity.service.js";
 import * as authService from "../services/auth.service.js";
 
 // import * as emailService from "../services/email.service.js";
@@ -65,52 +65,52 @@ export const postInviteToSignup = async (req, res) => {
     }
 };
 
-export const getSignup = async (req, res) => {
-    const entityId = "user";
-    const formId = "create";
+// export const getSignup = async (req, res) => {
+//     const entityId = "user";
+//     const formId = "create";
 
-    const entityMeta = await entityService.getEntityMeta(entityId);
+//     const entityMeta = await entityService.getEntityMeta(entityId);
 
-    const formData = entityService.getFormData(entityMeta, formId);
+//     const formData = entityService.getFormData(entityMeta, formId);
 
-    // res.send(formData);
-    res.render("user/signup", formData);
-};
+//     // res.send(formData);
+//     res.render("user/signup", formData);
+// };
 
-export const postSignup = async (req, res) => {
-    try {
-        // const userData = userService.getUserSignupData(req.body);
-        // const validationResult = await userService.validate(userData);
-        // if (!validationResult.isValid) {
-        //     const viewData = userService.getViewData(userData, validationResult.errors);
+// export const postSignup = async (req, res) => {
+//     try {
+//         // const userData = userService.getUserSignupData(req.body);
+//         // const validationResult = await userService.validate(userData);
+//         // if (!validationResult.isValid) {
+//         //     const viewData = userService.getViewData(userData, validationResult.errors);
 
-        //     return res.render("user/signup", viewData);
-        // }
+//         //     return res.render("user/signup", viewData);
+//         // }
 
-        // =========== old, but functional ===========
-        const entityId = "user";
-        const formId = "create";
+//         // =========== old, but functional ===========
+//         const entityId = "user";
+//         const formId = "create";
 
-        const entityMeta = await entityService.getEntityMeta(entityId);
+//         const entityMeta = await entityService.getEntityMeta(entityId);
 
-        const entityData = entityService.getEntityData(req.body, entityMeta, formId);
+//         const entityData = entityService.getEntityData(req.body, entityMeta, formId);
 
-        const validationResult = await entityService.validate(entityData, entityMeta, formId);
+//         const validationResult = await entityService.validate(entityData, entityMeta, formId);
 
-        if (!validationResult.isValid) {
-            const formData = entityService.getFormData(entityMeta, formId, entityData, validationResult.errors);
+//         if (!validationResult.isValid) {
+//             const formData = entityService.getFormData(entityMeta, formId, entityData, validationResult.errors);
 
-            //return res.send(formData);
-            return res.render("user/signup", formData);
-        }
+//             //return res.send(formData);
+//             return res.render("user/signup", formData);
+//         }
 
-        // await entityService.Create(entityData);
-        res.redirect("/signup/ask-to-confirm");
-    } catch (err) {
-        // @TODO display an error message (without details) and log the details
-        return res.status(500).json(err.message);
-    }
-};
+//         // await entityService.Create(entityData);
+//         res.redirect("/signup/ask-to-confirm");
+//     } catch (err) {
+//         // @TODO display an error message (without details) and log the details
+//         return res.status(500).json(err.message);
+//     }
+// };
 
 export const getSignupConfirm = async (req, res) => {
     try {

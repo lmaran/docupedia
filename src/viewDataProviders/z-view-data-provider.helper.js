@@ -15,7 +15,8 @@ lessonEntitySchema: {
   }
 }
 
-[Output]: {
+[Output]
+formFields: {
   name: {
     id: 'name',
     label: 'Titlul lecției',

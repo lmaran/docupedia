@@ -85,11 +85,11 @@ if 2 similar sections are used, the last one will override the first one --}}
                 </li>
                 {{else}}
                 <li class="nav-item">
-                    <a class="nav-link" href="/signup">Cont nou</a>
+                    <a class="nav-link" href="/auth/signup">Cont nou</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"
-                        href="/login{{#if @root.isNotRootPath}}?redirect_uri={{@root.redirectUri}}{{/if}}">Login</a>
+                        href="/auth/login{{#if @root.isNotRootPath}}?redirect_uri={{@root.redirectUri}}{{/if}}">Login</a>
                 </li>
                 {{/if}}
             </ul>

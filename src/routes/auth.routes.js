@@ -7,8 +7,8 @@ import * as authController from "../controllers/auth.controller.js";
 const router = Router();
 
 // signup
-router.get("/signup", authController.getSignup);
-router.post("/signup", authController.postSignup);
+router.get("/signup", authController.createOrEditGet);
+// router.post("/signup", authController.postSignup);
 // // router.post("/signup/invite", isAuthenticated, userSignupController.postInviteToSignup);
 // // router.get("/signup/invitation-sent", isAuthenticated, userSignupController.displaySignupInvitationSent);
 // // router.get("/signup/ask-to-confirm", userSignupController.displaySignupAskToConfirm);

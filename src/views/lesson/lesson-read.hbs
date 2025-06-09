@@ -2,15 +2,16 @@
 
 <h2>{{lesson.name}}</h2>
 <div>{{lesson.description}}</div>
-<form method="post" novalidate onsubmit="saveBtn.disabled = true; return true;"></form>
-<a href="/lectii/{{lesson._id}}/modifica" class="btn btn-primary btn-sm">Modifică</a>
+<div>{{lesson._id}}</div>
+<form method="post" novalidate onsubmit="saveBtn.disabled = true; return true;">
+    <a href="/lectii/{{lesson._id}}/modifica" class="btn btn-primary btn-sm">Modifică</a>
 
-<a href="/lectii">Lecții</a>
+    <a href="/lectii">Lecții</a>
 
 
-    <button type="submit"
-        formaction="/lectii/{{lesson._id}}/sterge"
-        name="deleteBtn" class="btn btn-link"
-        onclick="return confirm('Ești sigur că vrei să ștergi această lecție?');">
-        <i class="bi bi-trash-fill me-1"></i>Șterge</button>
+        <button type="submit"
+            formaction="/lectii/{{lesson._id}}/sterge"
+            name="deleteBtn" class="btn btn-link"
+            onclick="return confirm('Ești sigur că vrei să ștergi această lecție?');">
+            <i class="bi bi-trash-fill me-1"></i>Șterge</button>
 </form>

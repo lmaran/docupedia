@@ -12,7 +12,7 @@
 
         {{#each formFields}}
         <div class="row mb-3">
-            <label for="{{id}}" class="col-md-3 col-form-label {{#if required}}required{{/if}}">{{title}}</label>
+            <label for="{{id}}" class="col-md-3 col-form-label fw-bold {{#if required}}required{{/if}}">{{label}}:</label>
             <div class="col-md-7">
                 <input type="text" name="{{id}}" id="{{id}}"
                     class="form-control {{#if hasError}}is-invalid {{/if}}" value="{{value}}" 
@@ -23,7 +23,31 @@
         </div>
         {{/each}}
 
+        {{!-- {{#with formFields.name}}
+        <div class="row mb-3">
+            <label for="{{id}}" class="col-md-3 col-form-label fw-bold {{#if required}}required{{/if}}">{{label}}:</label>
+            <div class="col-md-7">
+                <input type="text" name="{{id}}" id="{{id}}"
+                    class="form-control {{#if hasError}}is-invalid {{/if}}" value="{{value}}" 
+                    {{#if hasFocus}}autofocus {{/if}} />
+                <div class="text-muted mb-0">{{description}}</div>
+                <div class="invalid-feedback">{{message}}</div>
+            </div>
+        </div>
+        {{/with}}
 
+        {{#with formFields.description}}
+        <div class="row mb-3">
+            <label for="{{id}}" class="col-md-3 col-form-label fw-bold {{#if required}}required{{/if}}">{{label}}:</label>
+            <div class="col-md-7">
+                <input type="text" name="{{id}}" id="{{id}}"
+                    class="form-control {{#if hasError}}is-invalid {{/if}}" value="{{value}}" 
+                    {{#if hasFocus}}autofocus {{/if}} />
+                <div class="text-muted mb-0">{{description}}</div>
+                <div class="invalid-feedback">{{message}}</div>
+            </div>
+        </div>
+        {{/with}} --}}
 
         <input type="hidden" name="invitationCode" value="{{data.invitationCode}}" />
         <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" />
