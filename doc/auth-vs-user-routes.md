@@ -1,0 +1,2 @@
+- Dacă utilizatorul este neautentificat => auth.routes => /signup, /login, /forgot-password, /reset-password/:token, /verify-email/:token
+- Dacă utilizator este deja autentificat => user.routes => /profile, /change-password

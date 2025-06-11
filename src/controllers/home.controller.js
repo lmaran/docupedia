@@ -1,8 +1,10 @@
+import config from "../config/config.js";
+
 export const getHomePage = async (req, res) => {
-    // const data = {
-    //     ctx: req.ctx,
-    // };
-    // res.render("home", data);
-    // console.log(res.locals);
     res.render("home");
+};
+
+// Health check for HAProxy (ex: docupedia-blue-production)
+export const healthCheck = (req, res) => {
+    res.send(`docupedia-${config.deployment_slot}-${config.env}`);
 };

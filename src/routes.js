@@ -1,13 +1,19 @@
-// Dacă utilizatorul este neautentificat  => auth.routes.js  => /signup, /login, /forgot-password, /reset-password/:token, /verify-email/:token
-// Dacă utilizator este deja autentificat => users.routes.js => /profile, /change-password
-
 import { Router } from "express";
-import * as authController from "../controllers/auth.controller.js";
+
+// import { isAuthenticated } from "../middlewares/is-authenticated.middleware.js";
+import * as homeController from "./controllers/home.controller.js";
+import * as authController from "./controllers/auth.controller.js";
+import * as userController from "./controllers/user.controller.js";
+import * as lessonController from "./controllers/lesson.controller.js";
 
 const router = Router();
 
-// signup
-router.get("/signup", authController.createOrEditGet);
+// home
+router.get("/", homeController.getHomePage);
+router.get("/check", homeController.healthCheck);
+
+// auth
+router.get("/auth/signup", authController.createOrEditGet);
 // router.post("/signup", authController.postSignup);
 // // router.post("/signup/invite", isAuthenticated, userSignupController.postInviteToSignup);
 // // router.get("/signup/invitation-sent", isAuthenticated, userSignupController.displaySignupInvitationSent);
@@ -38,5 +44,19 @@ router.get("/signup", authController.createOrEditGet);
 // router.get("/reset-password/ask-to-confirm", authController.displayResetPasswordAskToConfirm);
 // router.get("/reset-password/confirm/:resetPasswordCode", authController.getResetPasswordConfirm);
 // router.get("/reset-password/confirm-success", authController.getResetPasswordConfirmSuccess);
+
+// users
+router.get("/users", userController.getAll);
+
+// // /change-password/...
+// router.get("/change-password", isAuthenticated, userController.getChangePassword);
+// router.post("/change-password", isAuthenticated, userController.postChangePassword);
+
+// lectii
+router.get("/lectii", lessonController.getAll);
+router.get(["/lectii/adauga", "/lectii/:lessonId/modifica"], lessonController.createOrEditGet);
+router.post(["/lectii/adauga", "/lectii/:lessonId/modifica"], lessonController.createOrEditPost);
+router.get("/lectii/:lessonId", lessonController.getOneById);
+router.post("/lectii/:lessonId/sterge", lessonController.deleteOneById);
 
 export default router;

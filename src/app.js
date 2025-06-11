@@ -4,7 +4,7 @@ import handlebarHelpers from "./helpers/handlebar.helper.js";
 // import "./helpers/validator.default-rules.helper.js"; // Auto-register default validation rules
 import "./helpers/validator.helper.js"; // Auto-register default validation rules
 
-import routes from "./routes/index.js";
+import routes from "./routes.js";
 import path from "node:path";
 const __dirname = import.meta.dirname;
 

@@ -1,3 +1,5 @@
+// For simplicity, we will keep both entity and form schemas in the same file.
+// 1. Entity schemas (presentation + service/business layer)
 export const entitySchema = {
     name: {
         label: "Titlul lecției",
@@ -12,6 +14,7 @@ export const entitySchema = {
     },
 };
 
+// 2. Form schemas (presentation layer - MVC)
 export const formSchema = {
     formFields: [{ id: "name" }, { id: "description" }], // put them in the order you want to see them on the screen
 };
