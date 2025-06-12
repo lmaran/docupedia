@@ -1,6 +1,6 @@
 import * as authService from "../services/auth.service.js";
 import * as authSchema from "../schema/auth.schema.js";
-import * as viewDataProviderHelper from "./z-view-data-provider.helper.js";
+import * as viewDataProviderHelper from "./view-data-provider.helper.js";
 
 export const getFormData = async (id, validationErrors, entityInputData) => {
     const isEditMode = !!id;

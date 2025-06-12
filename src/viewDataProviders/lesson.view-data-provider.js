@@ -1,6 +1,6 @@
 import * as lessonService from "../services/lesson.service.js";
 import * as lessonSchema from "../schema/lesson.schema.js";
-import * as viewDataProviderHelper from "./z-view-data-provider.helper.js";
+import * as viewDataProviderHelper from "./view-data-provider.helper.js";
 
 // lessonEntitySchema: {
 //   name: {

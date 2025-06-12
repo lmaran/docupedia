@@ -1,8 +1,6 @@
 import express from "express";
 import { engine } from "express-handlebars";
 import handlebarHelpers from "./helpers/handlebar.helper.js";
-// import "./helpers/validator.default-rules.helper.js"; // Auto-register default validation rules
-import "./helpers/validator.helper.js"; // Auto-register default validation rules
 
 import routes from "./routes.js";
 import path from "node:path";

@@ -21,8 +21,8 @@ export function removeAllCustomMessages() {
 
 /**
  * Validates a value based on a schema.
- * @param {Object} schema - The validation schema.
  * @param {Object} data - The data to validate.
+ * @param {Object} schema - The validation schema.
  * @returns {Object} - Validation result with { isValid: boolean, errors: Object }.
  */
 export function validate(data, schema) {

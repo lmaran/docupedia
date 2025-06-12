@@ -32,7 +32,7 @@ formFields: {
 }
 */
 
-export const getFormFields = (lessonFormSchema, lessonEntitySchema, entityData) => {
+export const getFormFields = (lessonFormSchema, lessonEntitySchema) => {
     const formFields = {};
     lessonFormSchema.formFields.forEach((field) => {
         const fieldId = field.id;
@@ -46,11 +46,6 @@ export const getFormFields = (lessonFormSchema, lessonEntitySchema, entityData) 
 
         const isRequired = fieldSchema?.validationRules?.find((x) => x.ruleId == "required");
         if (isRequired) newField.required = true;
-
-        // In case of validation errors, send data back to the end user
-        if (entityData && entityData[fieldId]) {
-            newField.value = entityData[fieldId];
-        }
 
         formFields[fieldId] = newField;
     });
