@@ -1,6 +1,6 @@
 // import { v4 as uuidv4 } from "uuid";
 // import { userService } from "../services/user.service.js";
-// import * as authService from "../services/auth.service.js";
+import * as authService from "../services/auth.service.js";
 import * as authViewDataProvider from "../viewDataProviders/auth.view-data-provider.js";
 
 // import * as emailService from "../services/email.service.js";
@@ -65,10 +65,8 @@ import * as authViewDataProvider from "../viewDataProviders/auth.view-data-provi
 //     }
 // };
 
-export const createOrEditGet = async (req, res) => {
-    const lessonId = req.params.lessonId;
-
-    const formData = await authViewDataProvider.getFormData(lessonId);
+export const createGet = async (req, res) => {
+    const formData = await authViewDataProvider.getFormData();
 
     //res.send(data);
     res.render("auth/signup", formData);
@@ -79,45 +77,50 @@ export const createOrEditGet = async (req, res) => {
 //     res.render("auth/signup", viewData);
 // };
 
-// export const postSignup = async (req, res) => {
-//     const user = await authService.getUserSignupData(req.body);
+// only POST
+export const createPost = async (req, res) => {
+    const signup = {
+        lastName: req.body.lastName,
+        firstName: req.body.firstName,
+        email: req.body.email,
+        password: req.body.password,
+        confirmPassword: req.body.confirmPassword,
+    };
 
-//     const validationResult = await authService.validate(user);
-//     if (!validationResult.isValid) {
-//         const createUserFormData = await authService.getSignupViewData(user, validationResult.errors);
-//         return res.render("auth/signup", createUserFormData);
+    const result = await authService.insertOne(signup);
+
+    if (!result.isValid) {
+        const formData = await authViewDataProvider.getFormData(result.errors, signup);
+        return res.render("auth/signup", formData);
+    }
+
+    res.redirect("/auth/signup/ask-to-confirm");
+};
+
+// export const signupAskToConfirmGet = async (req, res) => {
+//     const activationCode = req.params.activationCode;
+
+//     const { token, refreshToken } = await authService.signupByActivationCode(activationCode);
+
+//     cookieHelper.setCookies(res, token, refreshToken);
+//     res.redirect("/signup/confirm-success");
+
+//     const data = {
+//         message: err.message,
+//         userIsNotAuthenticated: !req.user,
+//     };
+
+//     if (err.message === "AccountAlreadyActivated") {
+//         data.message = "Acest cont a fost deja <strong>activat</strong>!";
+//         res.render("user/signup-confirm-info", data);
+//     } else {
+//         res.render("user/signup-confirm-error", data);
 //     }
-
-//     // await entityService.Create(entityData);
-//     res.redirect("/signup/ask-to-confirm");
 // };
 
-// export const getSignupConfirm = async (req, res) => {
-//     try {
-//         const activationCode = req.params.activationCode;
-
-//         const { token, refreshToken } = await authService.signupByActivationCode(activationCode);
-
-//         cookieHelper.setCookies(res, token, refreshToken);
-//         res.redirect("/signup/confirm-success");
-//     } catch (err) {
-//         const data = {
-//             message: err.message,
-//             userIsNotAuthenticated: !req.user,
-//         };
-
-//         if (err.message === "AccountAlreadyActivated") {
-//             data.message = "Acest cont a fost deja <strong>activat</strong>!";
-//             res.render("user/signup-confirm-info", data);
-//         } else {
-//             res.render("user/signup-confirm-error", data);
-//         }
-//     }
-// };
-
-// export const displaySignupAskToConfirm = async (req, res) => {
-//     res.render("user/signup-ask-to-confirm");
-// };
+export const signupAskToConfirmGet = async (req, res) => {
+    res.render("auth/signup-ask-to-confirm");
+};
 
 // export const displaySignupInvitationSent = async (req, res) => {
 //     const data = {

@@ -13,11 +13,12 @@ router.get("/", homeController.getHomePage);
 router.get("/check", homeController.healthCheck);
 
 // auth
-router.get("/auth/signup", authController.createOrEditGet);
-// router.post("/signup", authController.postSignup);
+router.get("/auth/signup", authController.createGet);
+router.post("/auth/signup", authController.createPost);
+router.get("/auth/signup/ask-to-confirm", authController.signupAskToConfirmGet);
 // // router.post("/signup/invite", isAuthenticated, userSignupController.postInviteToSignup);
 // // router.get("/signup/invitation-sent", isAuthenticated, userSignupController.displaySignupInvitationSent);
-// // router.get("/signup/ask-to-confirm", userSignupController.displaySignupAskToConfirm);
+
 // // router.get("/signup/confirm/:activationCode", userSignupController.getSignupConfirm);
 // // router.get("/signup/confirm-success", userSignupController.getSignupConfirmSuccess);
 

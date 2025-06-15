@@ -1,7 +1,7 @@
 import * as validator from "./validator.helper.js";
 import * as schema from "../schema/auth.schema.js";
 
-export const validate = async (entityData) => {
+export const validateSignup = async (entityData) => {
     const entitySchema = schema.signupEntitySchema;
 
     const validationResult = await validator.validate(entityData, entitySchema);
