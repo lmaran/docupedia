@@ -1,4 +1,4 @@
-import * as validator from "./validator.helper.js";
+import * as validator from "./validator.js";
 import * as schema from "../schema/lesson.schema.js";
 
 export const validate = async (entityData) => {
