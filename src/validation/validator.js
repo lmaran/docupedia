@@ -11,7 +11,8 @@ export function validate(data, schema) {
     let isValid = true;
 
     for (const field in schema) {
-        const fieldRules = schema[field].validationRules || [];
+        const allRuleIds = [...rules.keys()];
+        const fieldRules = getFieldRules(schema[field], allRuleIds); // getFieldRules(schema[field]);
         const value = data[field];
 
         for (const ruleObj of fieldRules) {
@@ -42,3 +43,55 @@ export function validate(data, schema) {
 
     return { isValid, errors };
 }
+
+const getFieldRules = (fieldAttributes, allRuleIds) => {
+    const fieldRules = [];
+
+    allRuleIds.forEach((ruleId) => {
+        if (fieldAttributes[ruleId]) {
+            const rule = getNormalizedBuiltInRule(ruleId, fieldAttributes[ruleId]);
+            fieldRules.push(rule);
+        }
+    });
+
+    return fieldRules;
+};
+
+// Indiferent de input, produce același output. Exemplu:
+// Input 1: required: true
+// Input 2: required: [true, "Câmp obligatoriu"]
+// Output: { ruleId: "required", params:[true], message:"undefind/Câmp obligatoiru" }
+export const getNormalizedBuiltInRule = (ruleId, ruleValue) => {
+    // nefolosit și netestat (vezi mongoose)
+    if (ruleId === "enum" && typeof rule === "object" && ruleValue.values) {
+        return {
+            ruleId,
+            params: ruleValue.values,
+            message: ruleValue.message || `${ruleId} failed`,
+        };
+    }
+
+    if (Array.isArray(ruleValue)) {
+        const [value, message] = ruleValue; // primul element din array este considerat parametru, iar al 2-lea este considerat "message"
+        return {
+            ruleId,
+            params: [value],
+            message: message,
+        };
+    }
+
+    // nefolosit și netestat (vezi mongoose)
+    if (ruleValue instanceof RegExp) {
+        return {
+            ruleId,
+            params: [ruleValue.toString()],
+            message: `${ruleId} pattern mismatch`,
+        };
+    }
+
+    // Primitive values: bool, string, int
+    return {
+        ruleId,
+        params: [ruleValue],
+    };
+};

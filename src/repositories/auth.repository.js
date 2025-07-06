@@ -1,4 +1,4 @@
-// import { getDb, ObjectId } from "../helpers/mongo.helper.js";
+import { getDb, ObjectId } from "../helpers/mongo.helper.js";
 import { createGenericRepository } from "./generic.repository.js";
 
 const collectionName = "users";
@@ -7,10 +7,10 @@ const genericRepository = createGenericRepository(collectionName);
 export const authRepository = {
     ...genericRepository,
 
-    // getOneByEmail: async (email) => {
-    //     const db = await getDb();
-    //     return db.collection(collectionName).findOne({ email: email.toLowerCase() });
-    // },
+    getOneByEmail: async (email) => {
+        const db = await getDb();
+        return db.collection(collectionName).findOne({ email: email.toLowerCase() });
+    },
 
     // getOneBySignupCode: async (signupCode) => {
     //     const db = await getDb();

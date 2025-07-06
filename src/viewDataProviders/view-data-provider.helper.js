@@ -32,11 +32,11 @@ formFields: {
 }
 */
 
-export const getFormFields = (lessonFormSchema, lessonEntitySchema) => {
+export const getFormFields = (formSchema, entitySchema) => {
     const formFields = {};
-    lessonFormSchema.formFields.forEach((field) => {
+    formSchema.formFields.forEach((field) => {
         const fieldId = field.id;
-        const fieldSchema = lessonEntitySchema[fieldId];
+        const fieldSchema = entitySchema[fieldId];
 
         const newField = {
             id: fieldId,
@@ -44,8 +44,7 @@ export const getFormFields = (lessonFormSchema, lessonEntitySchema) => {
             description: fieldSchema.description,
         };
 
-        const isRequired = fieldSchema?.validationRules?.find((x) => x.ruleId == "required");
-        if (isRequired) newField.required = true;
+        if (fieldSchema.required) newField.required = true;
 
         formFields[fieldId] = newField;
     });
