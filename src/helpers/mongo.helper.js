@@ -1,17 +1,17 @@
 import { MongoClient, ObjectId } from "mongodb";
 import config from "../config/config.js";
 
-if (!config.mongo_uri) {
+if (!config.mongoUri) {
     throw new Error("Nu este definit un connection string pentru Mongo.");
 }
-if (!config.mongo_dbName) {
+if (!config.mongoDbName) {
     throw new Error("Nu este definit numele bazei de date.");
 }
 
 let clientPromise;
 export function getClientPromise() {
     if (!clientPromise) {
-        const client = new MongoClient(config.mongo_uri);
+        const client = new MongoClient(config.mongoUri);
         clientPromise = client.connect();
     }
     return clientPromise;
@@ -22,7 +22,7 @@ export async function getDb(dbName) {
     if (!client) {
         client = await getClientPromise();
     }
-    return client.db(dbName || config.mongo_dbName);
+    return client.db(dbName || config.mongoDbName);
 }
 
 export { ObjectId };

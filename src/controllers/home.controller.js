@@ -6,5 +6,5 @@ export const getHomePage = async (req, res) => {
 
 // Health check for HAProxy (ex: docupedia-blue-production)
 export const healthCheck = (req, res) => {
-    res.send(`docupedia-${config.deployment_slot}-${config.env}`);
+    res.send(`docupedia-${config.deploymentSlot}-${config.env}`);
 };
