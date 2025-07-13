@@ -2,6 +2,7 @@
 // import { userService } from "../services/user.service.js";
 import * as authService from "../services/auth.service.js";
 import * as authViewDataProvider from "../viewDataProviders/auth.view-data-provider.js";
+import { ErrorTypes } from "../errors/errorTypes.js";
 
 // import * as emailService from "../services/email.service.js";
 
@@ -89,9 +90,14 @@ export const createPost = async (req, res) => {
 
     const result = await authService.insertOne(signup);
 
-    if (!result.isValid) {
-        const formData = await authViewDataProvider.getFormData(result.errors, signup);
-        return res.render("auth/signup", formData);
+    if (!result.success) {
+        if (result.error?.type == ErrorTypes.VALIDATION_ERROR) {
+            const formData = await authViewDataProvider.getFormData(result.error?.details, signup);
+            return res.render("auth/signup", formData);
+        }
+
+        // Pentru orice altă eroare
+        return res.render("error", result.error);
     }
 
     res.redirect("/auth/signup/ask-to-confirm");

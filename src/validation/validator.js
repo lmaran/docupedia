@@ -1,14 +1,13 @@
 import { rules, messages } from "./validation-rules.js";
+import { ErrorTypes } from "../errors/errorTypes.js";
 
 /**
  * Validates a value based on a schema.
- * @param {Object} data - The data to validate.
- * @param {Object} schema - The validation schema.
- * @returns {Object} - Validation result with { isValid: boolean, errors: Object }.
+ * result = { success: boolean, error: { type: "VALIDATION_ERROR", details: {} } }.
  */
 export function validate(data, schema) {
-    const errors = {};
-    let isValid = true;
+    const result = { success: true };
+    const details = {};
 
     for (const field in schema) {
         const allRuleIds = [...rules.keys()];
@@ -25,7 +24,7 @@ export function validate(data, schema) {
 
             // We also need "data" and "schema" to reference additional fields în validation functions (e.g. "Nu coincide cu Parola")
             if (!validatorFn(value, ...params, data, schema)) {
-                isValid = false;
+                result.success = false;
 
                 const messageTemplate =
                     ruleObj.message || // entity-level
@@ -35,13 +34,15 @@ export function validate(data, schema) {
                 // String interpolation. E.g.: [6, "Minim {0} caractere"] => "Minim 6 caractere"
                 const message = messageTemplate.replace(/\{(\d+)\}/g, (_, index) => params[index] || "");
 
-                errors[field] = message;
+                details[field] = message;
                 break; // ignore the remaining rules for the same field
             }
         }
     }
 
-    return { isValid, errors };
+    if (!result.success) result.error = { type: ErrorTypes.VALIDATION_ERROR, details };
+
+    return result;
 }
 
 const getFieldRules = (fieldAttributes, allRuleIds) => {

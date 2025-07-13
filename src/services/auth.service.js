@@ -8,7 +8,7 @@ import * as emailService from "../services/email.service.js";
 export const insertOne = async (item) => {
     // Validate
     const validationResult = await authValidation.validateSignup(item);
-    if (!validationResult.isValid) return validationResult;
+    if (!validationResult.success) return validationResult;
 
     // Prepare data
     item.status = "pending_confirmation";
@@ -32,12 +32,14 @@ export const insertOne = async (item) => {
                 </html>`,
     };
     const result = await emailService.sendEmail(data);
-    // console.log(result);
+
     if (result.status != 200) {
         // TODO:
         // 1. undo from DB and return an error message
         // 2. return an error
+        // Test only
+        return { success: false, error: { type: "NOT_FOUND", code: "USER_NOT_FOUND", message: "Utilizator negăsit", details: { userId: 123 } } };
     }
 
-    return { isValid: true, result: insertedId };
+    return { success: true, data: insertedId };
 };
