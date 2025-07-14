@@ -1,6 +1,8 @@
 import { HttpCode } from "./httpCode.js";
 
 export const ErrorCode = {
+    // ******* 4xx Client Errors *******
+
     // Authentication specific
 
     // Authorization specific
@@ -8,23 +10,28 @@ export const ErrorCode = {
     // Business rules
 
     // Not found specific
-    USER_NOT_FOUND: "Utilizator negăsit",
+    USER_NOT_FOUND: "USER_NOT_FOUND",
 
     // Rate limiting
-
-    // Server errors
-
-    // Timeout specific
 
     // File/Upload specific
 
     // Business specific
 
     // Gone/Deprecated
+
+    // ******* 5xx Server Errors *******
+
+    // Server errors
+    MAILGUN_API_ERROR: "MAILGUN_API_ERROR",
+
+    // Timeout specific
 };
 
 // Doar ca exemplu
 export const ErrorCode2 = {
+    // ******* 4xx Client Errors *******
+
     // Authentication specific
     INVALID_TOKEN: HttpCode.UNAUTHORIZED,
     EXPIRED_TOKEN: HttpCode.UNAUTHORIZED,
@@ -50,6 +57,12 @@ export const ErrorCode2 = {
     INVALID_DATE: HttpCode.BAD_REQUEST,
     INVALID_ENUM_VALUE: HttpCode.BAD_REQUEST,
 
+    // File/Upload specific
+    FILE_TOO_LARGE: HttpCode.PAYLOAD_TOO_LARGE,
+    INVALID_FILE_TYPE: HttpCode.UNSUPPORTED_MEDIA_TYPE,
+    MALFORMED_FILE: HttpCode.BAD_REQUEST,
+    VIRUS_DETECTED: HttpCode.BAD_REQUEST,
+
     // Business rules
     DUPLICATE_ENTRY: HttpCode.CONFLICT,
     RESOURCE_IN_USE: HttpCode.CONFLICT,
@@ -69,6 +82,19 @@ export const ErrorCode2 = {
     QUOTA_EXCEEDED: HttpCode.TOO_MANY_REQUESTS,
     DAILY_LIMIT_EXCEEDED: HttpCode.TOO_MANY_REQUESTS,
 
+    // Gone/Deprecated
+    RESOURCE_DELETED: HttpCode.GONE,
+    ENDPOINT_DEPRECATED: HttpCode.GONE,
+    VERSION_NOT_SUPPORTED: HttpCode.GONE,
+
+    // Business specific
+    INSUFFICIENT_FUNDS: HttpCode.UNPROCESSABLE_ENTITY,
+    ACCOUNT_SUSPENDED: HttpCode.FORBIDDEN,
+    SUBSCRIPTION_EXPIRED: HttpCode.FORBIDDEN,
+    FEATURE_NOT_AVAILABLE: HttpCode.FORBIDDEN,
+
+    // ******* 5xx Server Errors *******
+
     // Server errors
     DATABASE_CONNECTION_FAILED: HttpCode.INTERNAL_SERVER_ERROR,
     EXTERNAL_SERVICE_ERROR: HttpCode.BAD_GATEWAY,
@@ -81,21 +107,5 @@ export const ErrorCode2 = {
     DATABASE_TIMEOUT: HttpCode.GATEWAY_TIMEOUT,
     EXTERNAL_API_TIMEOUT: HttpCode.GATEWAY_TIMEOUT,
 
-    // File/Upload specific
-    FILE_TOO_LARGE: HttpCode.PAYLOAD_TOO_LARGE,
-    INVALID_FILE_TYPE: HttpCode.UNSUPPORTED_MEDIA_TYPE,
-    MALFORMED_FILE: HttpCode.BAD_REQUEST,
-    VIRUS_DETECTED: HttpCode.BAD_REQUEST,
-
-    // Business specific
-    INSUFFICIENT_FUNDS: HttpCode.UNPROCESSABLE_ENTITY,
-    ACCOUNT_SUSPENDED: HttpCode.FORBIDDEN,
-    SUBSCRIPTION_EXPIRED: HttpCode.FORBIDDEN,
-    FEATURE_NOT_AVAILABLE: HttpCode.FORBIDDEN,
     MAINTENANCE_MODE: HttpCode.SERVICE_UNAVAILABLE,
-
-    // Gone/Deprecated
-    RESOURCE_DELETED: HttpCode.GONE,
-    ENDPOINT_DEPRECATED: HttpCode.GONE,
-    VERSION_NOT_SUPPORTED: HttpCode.GONE,
 };

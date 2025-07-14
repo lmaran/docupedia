@@ -31,14 +31,13 @@ export const insertOne = async (item) => {
                     <a href="${link}">${link}</a>
                 </html>`,
     };
-    const result = await emailService.sendEmail(data);
+    const emailResponse = await emailService.sendEmail(data);
 
-    if (result.status != 200) {
-        // TODO:
-        // 1. undo from DB and return an error message
-        // 2. return an error
-        // Test only
-        return { success: false, error: { type: "NOT_FOUND", code: "USER_NOT_FOUND", message: "Utilizator negăsit", details: { userId: 123 } } };
+    if (emailResponse.status != 200) {
+        // Rollback
+        await authRepository.deleteOneById(insertedId);
+
+        return emailResponse; // here emailResponse is an error response
     }
 
     return { success: true, data: insertedId };

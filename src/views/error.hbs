@@ -1,12 +1,18 @@
 <div class="container-fluid">
-    <h1>Eroare: {{message}}</h1>
+
+    <div class="alert alert-danger mt-3">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <strong>Eroare:</strong> {{message}}.
+    </div>
+
+    {{!-- <h1>Eroare: {{message}}</h1> --}}
 
     <ul>
-        {{!-- <li><strong>ErrorType:</strong> {{type}}</li> --}}
+        <li><strong>Tipul erorii:</strong> {{type}}</li>
         <li><strong>Codul erorii:</strong> {{code}}</li>
-        <li><strong>Detalii:</strong> {{toJSON details}}</li>
+        {{!-- <li><strong>Detalii:</strong> {{toJSONPretty details}}</li> --}}
+        <li><strong>Detalii:</strong> <pre>{{{toJSONPretty details}}}</pre></li>
     </ul>
-
 
     <a href="javascript:history.back()">Înapoi</a>
 </div>

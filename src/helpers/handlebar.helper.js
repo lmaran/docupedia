@@ -9,6 +9,9 @@ const helpers = {
     toJSON: function (object) {
         return JSON.stringify(object);
     },
+    toJSONPretty: function (object) {
+        return JSON.stringify(object, null, 2); // usage: <pre>{{{toJSONPretty myJson}}}</pre>
+    },
     eq: function (v1, v2) {
         return v1 === v2;
     },
